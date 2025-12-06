@@ -22,7 +22,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "복사"
+            "value" : "복사하기"
           }
         }
       }
@@ -38,10 +38,24 @@
       }
     },
     "Next" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이전달"
+          }
+        }
+      }
     },
     "Prev" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음달"
+          }
+        }
+      }
     },
     "Remove Bookmark" : {
       "localizations" : {
@@ -58,7 +72,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "공유"
+            "value" : "공유하기"
           }
         }
       }
