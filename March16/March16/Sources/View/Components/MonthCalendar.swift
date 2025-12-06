@@ -72,6 +72,10 @@ struct DayCell: View {
         return date.isSameDay(as: selectedDate)
     }
     var isBookmarked: Bool = false
+    var isFuture: Bool {
+        guard let date else { return false }
+        return date.timeIntervalSinceNow > 0
+    }
     
     var dayString: String {
         guard let date else { return "" }
@@ -93,7 +97,7 @@ struct DayCell: View {
                             .background(isSelected ? AppColor.primary : Color.clear)
                             .clipShape(.capsule)
                             .padding(.horizontal, 2)
-                            .foregroundStyle(isSelected ? AppColor.background : AppColor.primary)
+                            .foregroundStyle(isSelected ? AppColor.background : isFuture ? AppColor.quaternary : AppColor.primary)
                         Spacer()
                         Image(systemName: "bookmark.fill")
                             .font(.system(size: 12, weight: .medium))
@@ -104,6 +108,7 @@ struct DayCell: View {
                     .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
+                .disabled(isFuture)
             } else {
                 Color.clear
             }
