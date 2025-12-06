@@ -47,7 +47,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $isShareSheetPresented) {
-            Text("ShareView")
+            ShareView(date: Date(), dailyVerse: dailyVerse)
         }
     }
 
