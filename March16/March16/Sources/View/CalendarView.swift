@@ -33,6 +33,16 @@ struct CalendarView: View {
                 VStack(spacing: 0) {
                     MonthView(date: date)
                     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
+                        .gesture(
+                            DragGesture(minimumDistance: 50)
+                                .onEnded { value in
+                                    if value.translation.width > 0 {
+                                        goToPreviousMonth()
+                                    } else {
+                                        goToNextMonth()
+                                    }
+                                }
+                        )
                     CalendarBottomBar(date: $date)
                     MiniVerseView(dailyVerse: selectedDailyVerse)
                         .contextMenu {
@@ -76,6 +86,18 @@ struct CalendarView: View {
         } else {
             let bookmark = Bookmark(dailyVerseId: selectedDailyVerse.id)
             modelContext.insert(bookmark)
+        }
+    }
+
+    private func goToPreviousMonth() {
+        withAnimation {
+            date = Calendar.current.date(byAdding: .month, value: -1, to: date) ?? date
+        }
+    }
+
+    private func goToNextMonth() {
+        withAnimation {
+            date = Calendar.current.date(byAdding: .month, value: 1, to: date) ?? date
         }
     }
 }
