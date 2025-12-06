@@ -43,7 +43,9 @@ struct MonthCalendar: View {
                     .frame(width: 44 * 7 + 4 * 6)
             }
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 32)
+        .padding(.top, 8)
+        .padding(.bottom, 2)
     }
 }
 

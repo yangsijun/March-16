@@ -38,8 +38,8 @@ struct CalendarBottomBar: View {
         }
         .font(.system(size: 14, weight: .semibold, design: .serif))
         .foregroundStyle(AppColor.tertiary)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
+        .padding(.horizontal, 32)
+        .padding(.bottom, 4)
     }
 }
 

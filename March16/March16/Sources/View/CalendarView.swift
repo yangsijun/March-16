@@ -33,7 +33,6 @@ struct CalendarView: View {
                 VStack(spacing: 0) {
                     MonthView(date: date)
                     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
-                        .padding(.vertical, 8)
                     CalendarBottomBar(date: $date)
                     MiniVerseView(dailyVerse: selectedDailyVerse)
                         .contextMenu {
