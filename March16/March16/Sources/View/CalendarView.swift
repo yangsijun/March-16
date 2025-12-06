@@ -21,9 +21,9 @@ struct CalendarView: View {
                         .padding(.vertical, 8)
                     CalendarBottomBar(date: $date)
                     if let selectedDate = selectedDate {
-                        MiniVerseView(dailyVerse: MockDataRepository.shared.fetchDailyVerse(date: selectedDate))
+                        MiniVerseView(dailyVerse: DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder)
                     } else {
-                        MiniVerseView(dailyVerse: MockDataRepository.shared.placeholderDailyVerse)
+                        MiniVerseView(dailyVerse: .placeholder)
                     }
                 }
             }

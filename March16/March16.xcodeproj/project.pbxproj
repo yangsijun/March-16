@@ -6,6 +6,23 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		ED70882B2EE4721500F7FC6F /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = ED70882A2EE4721500F7FC6F /* GRDB */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ED7088352EE474ED00F7FC6F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		ED25CAC62EDDBF380023876A /* March16.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = March16.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +31,7 @@
 		ED25CAD32EDDBF3A0023876A /* Exceptions for "March16" folder in "March16" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			assetTagsByRelativePath = {
-				March16DB_KJV.sqlite = (kjv_db, );
+				Resources/March16DB_KJV.sqlite = (kjv_db, );
 			};
 			membershipExceptions = (
 				Info.plist,
@@ -39,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED70882B2EE4721500F7FC6F /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +89,7 @@
 				ED25CAC22EDDBF380023876A /* Sources */,
 				ED25CAC32EDDBF380023876A /* Frameworks */,
 				ED25CAC42EDDBF380023876A /* Resources */,
+				ED7088352EE474ED00F7FC6F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -81,6 +100,7 @@
 			);
 			name = March16;
 			packageProductDependencies = (
+				ED70882A2EE4721500F7FC6F /* GRDB */,
 			);
 			productName = March16;
 			productReference = ED25CAC62EDDBF380023876A /* March16.app */;
@@ -114,6 +134,7 @@
 			mainGroup = ED25CABD2EDDBF380023876A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				ED7088292EE4721500F7FC6F /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ED25CAC72EDDBF380023876A /* Products */;
@@ -378,6 +399,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ED7088292EE4721500F7FC6F /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ED70882A2EE4721500F7FC6F /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED7088292EE4721500F7FC6F /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ED25CABE2EDDBF380023876A /* Project object */;
 }

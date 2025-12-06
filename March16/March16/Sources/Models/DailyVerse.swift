@@ -33,4 +33,14 @@ struct DailyVerse: Identifiable, Codable {
             return "\(book) \(chapter):\(startVerse)"
         }
     }
+
+    static let placeholder = DailyVerse(
+        id: 0,
+        month: 0,
+        day: 0,
+        book: "",
+        chapter: 0,
+        startVerse: 0,
+        content: ""
+    )
 }

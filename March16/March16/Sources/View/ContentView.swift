@@ -13,7 +13,9 @@ struct ContentView: View {
     @State private var isBookmarked: Bool = false
     @State private var isShareSheetPresented: Bool = false
     
-    var dailyVerse = MockDataRepository.shared.fetchDailyVerse(date: Date())
+    var dailyVerse: DailyVerse {
+        DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
+    }
     
     var body: some View {
         NavigationStack {

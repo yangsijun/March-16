@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct MockDataRepository {
-    static let shared = MockDataRepository()
-    
+struct MockDailyVerseRepository: DailyVerseRepository {
+    static let shared = MockDailyVerseRepository()
+
     private init() {}
     
     var mockDailyVerses: [DailyVerse] = [
@@ -46,22 +46,7 @@ struct MockDataRepository {
         DailyVerse(id: 1231, month: 12, day: 31, book: "Mark", chapter: 12, startVerse: 31, content: "And the second is like, namely this, Thou shalt love thy neighbour as thyself. There is none other commandment greater than these."),
     ]
     
-    var placeholderDailyVerse: DailyVerse {
-        DailyVerse(id: 0, month: 0, day: 0, book: "John", chapter: 3, startVerse: 16, content: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.")
+    func fetchDailyVerse(month: Int, day: Int, versionCode: String) -> DailyVerse? {
+        mockDailyVerses.first { $0.month == month && $0.day == day }
     }
-    
-    func fetchDailyVerse(date: Date) -> DailyVerse {
-        let calendar = Calendar.current
-        let month = calendar.component(.month, from: date)
-        let day = calendar.component(.day, from: date)
-        
-        for verse in mockDailyVerses {
-            if verse.month == month && verse.day == day {
-                return verse
-            }
-        }
-        
-        return placeholderDailyVerse
-    }
-    
 }
