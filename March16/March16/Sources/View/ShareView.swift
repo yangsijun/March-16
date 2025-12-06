@@ -54,7 +54,7 @@ struct ShareView: View {
                     Button {
                         shareImage(image)
                     } label: {
-                        Label("Share", systemImage: "square.and.arrow.up")
+                        Label(String(localized: "Share"), systemImage: "square.and.arrow.up")
                             .font(.system(size: 17, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -129,12 +129,14 @@ struct ShareCardView: View {
 
     var monthString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "MMM"
         return formatter.string(from: date).uppercased()
     }
 
     var dayString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "d"
         return formatter.string(from: date)
     }

@@ -40,7 +40,7 @@ struct CalendarView: View {
                                 toggleBookmark()
                             } label: {
                                 Label(
-                                    isBookmarked ? "Remove Bookmark" : "Add Bookmark",
+                                    isBookmarked ? String(localized: "Remove Bookmark") : String(localized: "Add Bookmark"),
                                     systemImage: isBookmarked ? "bookmark.slash" : "bookmark"
                                 )
                             }
@@ -48,12 +48,12 @@ struct CalendarView: View {
                             Button {
                                 isShareSheetPresented = true
                             } label: {
-                                Label("Share", systemImage: "square.and.arrow.up")
+                                Label(String(localized: "Share"), systemImage: "square.and.arrow.up")
                             }
                             Button {
                                 UIPasteboard.general.string = "[\(selectedDailyVerse.referenceString)] \(selectedDailyVerse.content)"
                             } label: {
-                                Label("Copy", systemImage: "doc.on.doc")
+                                Label(String(localized: "Copy"), systemImage: "doc.on.doc")
                             }
                         }
                 }
@@ -84,11 +84,13 @@ struct MonthView: View {
     var date: Date
     var yearString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "yyyy"
         return formatter.string(from: date)
     }
     var monthString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "MMM"
         return formatter.string(from: date).uppercased()
     }
@@ -121,7 +123,7 @@ struct CalendarTopBar: View {
                         isCalendarPresented = false
                     }
                 } label: {
-                    Label("Dismiss", systemImage: "xmark")
+                    Label(String(localized: "Dismiss"), systemImage: "xmark")
                 }
                 Spacer()
             }

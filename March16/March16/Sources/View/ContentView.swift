@@ -35,7 +35,7 @@ struct ContentView: View {
                             Button {
                                 UIPasteboard.general.string = "[\(dailyVerse.referenceString)] \(dailyVerse.content)"
                             } label: {
-                                Label("Copy", systemImage: "doc.on.doc")
+                                Label(String(localized: "Copy"), systemImage: "doc.on.doc")
                             }
                         }
                     Spacer()
@@ -72,11 +72,13 @@ struct DateView: View {
     var date: Date
     var monthString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "MMM"
         return formatter.string(from: date).uppercased()
     }
     var dayString: String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "d"
         return formatter.string(from: date)
     }

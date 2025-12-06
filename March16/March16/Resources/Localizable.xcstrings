@@ -1,0 +1,68 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add Bookmark" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "북마크 추가"
+          }
+        }
+      }
+    },
+    "Bookmark" : {
+
+    },
+    "Calendar" : {
+
+    },
+    "Copy" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사"
+          }
+        }
+      }
+    },
+    "Dismiss" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        }
+      }
+    },
+    "Next" : {
+
+    },
+    "Prev" : {
+
+    },
+    "Remove Bookmark" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "북마크 제거"
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

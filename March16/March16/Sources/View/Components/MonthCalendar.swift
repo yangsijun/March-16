@@ -95,6 +95,7 @@ struct DayCell: View {
     var dayString: String {
         guard let date else { return "" }
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
         formatter.dateFormat = "d"
         return formatter.string(from: date)
     }

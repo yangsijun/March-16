@@ -16,7 +16,7 @@ protocol DailyVerseRepository {
 }
 
 extension DailyVerseRepository {
-    func fetchDailyVerse(date: Date, versionCode: String = "WEBBE") -> DailyVerse? {
+    func fetchDailyVerse(date: Date, versionCode: String = BibleVersion.current.code) -> DailyVerse? {
         let calendar = Calendar.current
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
@@ -73,7 +73,7 @@ final class DailyVerseRepositoryImpl: DailyVerseRepository {
         self.database = database
     }
 
-    func fetchDailyVerse(month: Int, day: Int, versionCode: String = "WEBBE") -> DailyVerse? {
+    func fetchDailyVerse(month: Int, day: Int, versionCode: String = BibleVersion.current.code) -> DailyVerse? {
         do {
             return try database.read { db in
                 let sql = """

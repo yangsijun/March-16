@@ -130,6 +130,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = ED25CABD2EDDBF380023876A;
 			minimizedProjectReferenceProxies = 1;
