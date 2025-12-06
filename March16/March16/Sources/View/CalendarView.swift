@@ -120,10 +120,10 @@ struct MonthView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(yearString)
-                .font(.system(size: 28, weight: .bold, design: .serif))
+                .appFont(.dateYear)
                 .frame(height: 28)
             Text(monthString)
-                .font(.system(size: 90, weight: .black, design: .serif))
+                .appFont(.dateMonthLarge)
                 .frame(height: 90)
         }
         .foregroundStyle(AppColor.primary)

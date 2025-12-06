@@ -13,12 +13,12 @@ struct VerseView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(dailyVerse.content)
-                .font(.system(size: 24, weight: .regular, design: .serif))
+                .appFont(.verseContent)
                 .italic()
                 .lineSpacing(1)
                 .foregroundStyle(AppColor.primary)
             Text(dailyVerse.referenceString)
-                .font(.system(size: 14, weight: .regular))
+                .appFont(.verseReference)
                 .foregroundStyle(AppColor.tertiary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -33,12 +33,12 @@ struct MiniVerseView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(dailyVerse.content)
-                .font(.system(size: 17, weight: .regular, design: .serif))
+                .appFont(.verseContentMini)
                 .italic()
                 .lineSpacing(1)
                 .foregroundStyle(AppColor.primary)
             Text(dailyVerse.referenceString)
-                .font(.system(size: 14, weight: .regular))
+                .appFont(.verseReference)
                 .foregroundStyle(AppColor.tertiary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

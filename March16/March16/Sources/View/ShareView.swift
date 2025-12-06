@@ -55,7 +55,7 @@ struct ShareView: View {
                         shareImage(image)
                     } label: {
                         Label(String(localized: "Share"), systemImage: "square.and.arrow.up")
-                            .font(.system(size: 17, weight: .semibold))
+                            .appFont(.shareButton)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
                             .background(AppColor.primary)
@@ -147,9 +147,9 @@ struct ShareCardView: View {
 
             VStack(spacing: 0) {
                 Text(monthString)
-                    .font(.system(size: 32, weight: .bold, design: .serif))
+                    .appFont(.dateMonthSmall)
                 Text(dayString)
-                    .font(.system(size: 120, weight: .black, design: .serif))
+                    .appFont(.dateDayMedium)
             }
             .foregroundStyle(AppColor.primary)
 
@@ -158,12 +158,12 @@ struct ShareCardView: View {
 
             VStack(alignment: .leading, spacing: 16) {
                 Text(dailyVerse.content)
-                    .font(.system(size: 20, weight: .regular, design: .serif))
+                    .appFont(.verseContentShare)
                     .italic()
                     .lineSpacing(4)
                     .foregroundStyle(AppColor.primary)
                 Text(dailyVerse.referenceString)
-                    .font(.system(size: 14, weight: .regular))
+                    .appFont(.verseReference)
                     .foregroundStyle(AppColor.tertiary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -71,7 +71,7 @@ struct BottomBarButton<Label: View>: View {
                 .overlay(
                     label
                         .labelStyle(.iconOnly)
-                        .font(.system(size: 22, weight: .semibold))
+                        .appFont(.bottomBarIcon)
                 )
         }
         .foregroundStyle(AppColor.primary)

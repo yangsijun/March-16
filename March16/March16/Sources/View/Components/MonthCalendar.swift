@@ -58,7 +58,7 @@ struct dayOfWeekRow: View {
             HStack(spacing: spacing) {
                 ForEach(days, id: \.self) { day in
                     Text(day)
-                        .font(.system(size: 17, weight: .bold, design: .serif))
+                        .appFont(.calendarDayOfWeek)
                         .foregroundColor(AppColor.secondary)
                         .frame(width: 44)
                 }
@@ -108,7 +108,7 @@ struct DayCell: View {
                 } label: {
                     VStack(spacing: 0) {
                         Text(dayString)
-                            .font(.system(size: 17, weight: isToday ? .heavy : .medium, design: .serif))
+                            .appFont(.calendarDay(isToday: isToday))
                             .frame(maxWidth: .infinity)
                             .background(isSelected ? AppColor.primary : Color.clear)
                             .clipShape(.capsule)
@@ -116,7 +116,7 @@ struct DayCell: View {
                             .foregroundStyle(isSelected ? AppColor.background : isFuture ? AppColor.quaternary : AppColor.primary)
                         Spacer()
                         Image(systemName: "bookmark.fill")
-                            .font(.system(size: 12, weight: .medium))
+                            .appFont(.calendarBookmarkIcon)
                             .foregroundStyle(AppColor.tertiary)
                             .opacity(isBookmarked ? 1 : 0)
                     }

@@ -86,10 +86,10 @@ struct DateView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(monthString)
-                .font(.system(size: 32, weight: .bold, design: .serif))
+                .appFont(.dateMonthSmall)
                 .frame(height: 32)
             Text(dayString)
-                .font(.system(size: 128, weight: .black, design: .serif))
+                .appFont(.dateDayLarge)
                 .frame(height: 128)
         }
         .foregroundStyle(AppColor.primary)

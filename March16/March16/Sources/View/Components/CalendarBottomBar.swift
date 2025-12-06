@@ -36,7 +36,7 @@ struct CalendarBottomBar: View {
             }
             .frame(height: 48)
         }
-        .font(.system(size: 14, weight: .semibold, design: .serif))
+        .appFont(.calendarBottomBar)
         .foregroundStyle(AppColor.tertiary)
         .padding(.horizontal, 32)
         .padding(.bottom, 4)

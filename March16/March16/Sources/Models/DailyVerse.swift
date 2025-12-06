@@ -38,9 +38,9 @@ struct DailyVerse: Identifiable, Codable {
         id: 0,
         month: 0,
         day: 0,
-        book: "",
-        chapter: 0,
-        startVerse: 0,
-        content: ""
+        book: "John",
+        chapter: 3,
+        startVerse: 16,
+        content: "For God so loved the world, that he gave his only born Son, that whoever believes in him should not perish, but have eternal life."
     )
 }
