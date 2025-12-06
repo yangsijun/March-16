@@ -20,9 +20,9 @@ struct MonthCalendar: View {
     
     var body: some View {
         LazyVStack(alignment: .center, spacing: 4) {
-            dayOfWeekRow()
+            dayOfWeekRow(spacing: 4)
             ForEach(displayDays, id: \.self) { week in
-                LazyHStack(spacing: 8) {
+                LazyHStack(spacing: 4) {
                     ForEach(week, id: \.self) { date in
                         DayCell(
                             date: date,
@@ -32,26 +32,30 @@ struct MonthCalendar: View {
                 }
                 Divider()
                     .background(Color("AppTertiaryColor"))
+                    .frame(width: 44 * 7 + 4 * 6)
             }
         }
+        .padding(.horizontal, 16)
     }
 }
 
 struct dayOfWeekRow: View {
+    var spacing: CGFloat = 4
     let days: [String] = ["S", "M", "T", "W", "T", "F", "S"]
     
     var body: some View {
         VStack(spacing: 4) {
-            HStack(spacing: 8) {
+            HStack(spacing: spacing) {
                 ForEach(days, id: \.self) { day in
                     Text(day)
-                        .font(.system(size: 24, weight: .bold, design: .serif))
+                        .font(.system(size: 17, weight: .bold, design: .serif))
                         .foregroundColor(Color("AppSecondaryColor"))
-                        .frame(minWidth: 44, maxWidth: 44)
+                        .frame(width: 44)
                 }
             }
             Divider()
                 .background(Color("AppTertiaryColor"))
+                .frame(width: 44 * 7 + 4 * 6)
         }
     }
 }
@@ -79,9 +83,9 @@ struct DayCell: View {
     var body: some View {
         Group {
             if let date {
-                Button(action: {
+                Button {
                     selectedDate = date
-                }) {
+                } label: {
                     VStack(spacing: 0) {
                         Text(dayString)
                             .font(.system(size: 17, weight: isToday ? .heavy : .medium, design: .serif))
@@ -104,7 +108,7 @@ struct DayCell: View {
                 Color.clear
             }
         }
-        .frame(minWidth: 44, maxWidth: 44, minHeight: 44, maxHeight: 44)
+        .frame(width: 44, height: 44)
     }
 }
 

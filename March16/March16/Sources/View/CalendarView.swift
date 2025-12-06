@@ -18,15 +18,14 @@ struct CalendarView: View {
                 VStack(spacing: 0) {
                     MonthView(date: date)
                     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
-                        .padding(.horizontal, 24)
                         .padding(.vertical, 8)
+                    CalendarBottomBar(date: $date)
                     if let selectedDate = selectedDate {
                         MiniVerseView(dailyVerse: MockDataRepository.shared.fetchDailyVerse(date: selectedDate))
                     } else {
                         MiniVerseView(dailyVerse: MockDataRepository.shared.placeholderDailyVerse)
                     }
                 }
-                CalendarBottomBar(date: $date)
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
