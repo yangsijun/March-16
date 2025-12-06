@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var isCalendarPresented: Bool = false
     @State private var isBookmarked: Bool = false
     @State private var isShareSheetPresented: Bool = false
+    @State private var calendarDate: Date = Date()
+    @State private var selectedDate: Date? = Date()
     
     var dailyVerse: DailyVerse {
         DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
@@ -29,9 +31,11 @@ struct ContentView: View {
                 BottomBar(
                     isCalendarPresented: $isCalendarPresented,
                     isBookmarked: $isBookmarked,
-                    isShareSheetPresented: $isShareSheetPresented
+                    isShareSheetPresented: $isShareSheetPresented,
+                    calendarDate: $calendarDate,
+                    selectedDate: $selectedDate
                 )
-                CalendarView(isPresented: $isCalendarPresented, date: Date())
+                CalendarView(isPresented: $isCalendarPresented, date: $calendarDate, selectedDate: $selectedDate)
                     .opacity(isCalendarPresented ? 1 : 0)
             }
         }

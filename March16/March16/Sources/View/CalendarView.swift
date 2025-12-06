@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CalendarView: View {
     @Binding var isPresented: Bool
-    @State var date: Date
-    @State var selectedDate: Date? = Date()
+    @Binding var date: Date
+    @Binding var selectedDate: Date?
     
     var body: some View {
         ZStack {
@@ -88,6 +88,7 @@ struct CalendarTopBar: View {
 }
 
 #Preview {
-    let date = Date()
-    CalendarView(isPresented: .constant(true), date: date)
+    @Previewable @State var date = Date()
+    @Previewable @State var selectedDate: Date? = Date()
+    CalendarView(isPresented: .constant(true), date: $date, selectedDate: $selectedDate)
 }

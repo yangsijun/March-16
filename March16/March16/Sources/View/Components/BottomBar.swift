@@ -11,13 +11,17 @@ struct BottomBar: View {
     @Binding var isCalendarPresented: Bool
     @Binding var isBookmarked: Bool
     @Binding var isShareSheetPresented: Bool
-    
+    @Binding var calendarDate: Date
+    @Binding var selectedDate: Date?
+
     var body: some View {
         VStack {
             Spacer()
             HStack(spacing: 12) {
                 BottomBarButton {
                     withAnimation {
+                        calendarDate = Date()
+                        selectedDate = Date()
                         isCalendarPresented = true
                     }
                 } label: {
@@ -77,9 +81,11 @@ struct BottomBarButton<Label: View>: View {
     @Previewable @State var isCalendarPresented: Bool = false
     @Previewable @State var isBookmarked: Bool = false
     @Previewable @State var isShareSheetPresented: Bool = false
-    
+    @Previewable @State var calendarDate: Date = Date()
+    @Previewable @State var selectedDate: Date? = Date()
+
     VStack {
         Spacer()
-        BottomBar(isCalendarPresented: $isCalendarPresented, isBookmarked: $isBookmarked, isShareSheetPresented: $isShareSheetPresented)
+        BottomBar(isCalendarPresented: $isCalendarPresented, isBookmarked: $isBookmarked, isShareSheetPresented: $isShareSheetPresented, calendarDate: $calendarDate, selectedDate: $selectedDate)
     }
 }
