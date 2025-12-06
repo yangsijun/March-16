@@ -76,11 +76,16 @@ final class DailyVerseRepositoryImpl: DailyVerseRepository {
     func fetchDailyVerse(month: Int, day: Int, versionCode: String = BibleVersion.current.code) -> DailyVerse? {
         do {
             return try database.read { db in
+                // Use KJV attached database for KJV version
+                let verseTextTable = versionCode == BibleVersion.kjv.code && DatabaseManager.shared.isKJVAttached
+                    ? "kjv.verse_text"
+                    : "verse_text"
+
                 let sql = """
                     SELECT dv.id, dv.month, dv.day, dv.book_key, dv.chapter, dv.start_verse, dv.end_verse,
                            vt.book_name, vt.content
                     FROM daily_verse dv
-                    JOIN verse_text vt ON dv.id = vt.daily_id
+                    JOIN \(verseTextTable) vt ON dv.id = vt.daily_id
                     WHERE dv.month = ? AND dv.day = ? AND vt.version_code = ?
                     LIMIT 1
                     """

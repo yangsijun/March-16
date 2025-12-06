@@ -12,13 +12,17 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
 
+    var appState = AppState.shared
+
     @State private var isCalendarPresented: Bool = false
     @State private var isShareSheetPresented: Bool = false
     @State private var calendarDate: Date = Date()
     @State private var selectedDate: Date? = Date()
 
     var dailyVerse: DailyVerse {
-        DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
+        // Access appState.isKJVReady to trigger refresh when KJV becomes available
+        _ = appState.isKJVReady
+        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
     }
 
     var isBookmarked: Bool {
