@@ -6,12 +6,27 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CalendarView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var bookmarks: [Bookmark]
+
     @Binding var isPresented: Bool
     @Binding var date: Date
     @Binding var selectedDate: Date?
-    
+
+    @State private var isShareSheetPresented: Bool = false
+
+    private var selectedDailyVerse: DailyVerse {
+        guard let selectedDate else { return .placeholder }
+        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder
+    }
+
+    private var isBookmarked: Bool {
+        bookmarks.contains { $0.dailyVerseId == selectedDailyVerse.id }
+    }
+
     var body: some View {
         ZStack {
             ScrollView {
@@ -20,11 +35,22 @@ struct CalendarView: View {
                     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
                         .padding(.vertical, 8)
                     CalendarBottomBar(date: $date)
-                    if let selectedDate = selectedDate {
-                        MiniVerseView(dailyVerse: DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder)
-                    } else {
-                        MiniVerseView(dailyVerse: .placeholder)
-                    }
+                    MiniVerseView(dailyVerse: selectedDailyVerse)
+                        .contextMenu {
+                            Button {
+                                toggleBookmark()
+                            } label: {
+                                Label(
+                                    isBookmarked ? "Remove Bookmark" : "Add Bookmark",
+                                    systemImage: isBookmarked ? "bookmark.slash" : "bookmark"
+                                )
+                            }
+                            Button {
+                                isShareSheetPresented = true
+                            } label: {
+                                Label("Share", systemImage: "square.and.arrow.up")
+                            }
+                        }
                 }
             }
             .scrollIndicators(.hidden)
@@ -32,6 +58,20 @@ struct CalendarView: View {
             CalendarTopBar(isCalendarPresented: $isPresented)
         }
         .background(AppColor.background)
+        .sheet(isPresented: $isShareSheetPresented) {
+            if let selectedDate {
+                ShareView(date: selectedDate, dailyVerse: selectedDailyVerse)
+            }
+        }
+    }
+
+    private func toggleBookmark() {
+        if let existingBookmark = bookmarks.first(where: { $0.dailyVerseId == selectedDailyVerse.id }) {
+            modelContext.delete(existingBookmark)
+        } else {
+            let bookmark = Bookmark(dailyVerseId: selectedDailyVerse.id)
+            modelContext.insert(bookmark)
+        }
     }
 }
 
@@ -91,4 +131,5 @@ struct CalendarTopBar: View {
     @Previewable @State var date = Date()
     @Previewable @State var selectedDate: Date? = Date()
     CalendarView(isPresented: .constant(true), date: $date, selectedDate: $selectedDate)
+        .modelContainer(for: Bookmark.self, inMemory: true)
 }
