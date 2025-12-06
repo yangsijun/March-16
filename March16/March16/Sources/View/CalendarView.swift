@@ -31,7 +31,7 @@ struct CalendarView: View {
             .scrollBounceBehavior(.basedOnSize)
             CalendarTopBar(isCalendarPresented: $isPresented)
         }
-        .background(Color("AppBackgroundColor"))
+        .background(AppColor.background)
     }
 }
 
@@ -57,7 +57,7 @@ struct MonthView: View {
                 .font(.system(size: 90, weight: .black, design: .serif))
                 .frame(height: 90)
         }
-        .foregroundStyle(Color("AppPrimaryColor"))
+        .foregroundStyle(AppColor.primary)
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.horizontal, 32)
         .padding(.top, 48)

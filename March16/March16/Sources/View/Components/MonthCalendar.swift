@@ -31,7 +31,7 @@ struct MonthCalendar: View {
                     }
                 }
                 Divider()
-                    .background(Color("AppTertiaryColor"))
+                    .background(AppColor.tertiary)
                     .frame(width: 44 * 7 + 4 * 6)
             }
         }
@@ -49,12 +49,12 @@ struct dayOfWeekRow: View {
                 ForEach(days, id: \.self) { day in
                     Text(day)
                         .font(.system(size: 17, weight: .bold, design: .serif))
-                        .foregroundColor(Color("AppSecondaryColor"))
+                        .foregroundColor(AppColor.secondary)
                         .frame(width: 44)
                 }
             }
             Divider()
-                .background(Color("AppTertiaryColor"))
+                .background(AppColor.tertiary)
                 .frame(width: 44 * 7 + 4 * 6)
         }
     }
@@ -90,14 +90,14 @@ struct DayCell: View {
                         Text(dayString)
                             .font(.system(size: 17, weight: isToday ? .heavy : .medium, design: .serif))
                             .frame(maxWidth: .infinity)
-                            .background(isSelected ? Color("AppPrimaryColor") : Color.clear)
+                            .background(isSelected ? AppColor.primary : Color.clear)
                             .clipShape(.capsule)
                             .padding(.horizontal, 2)
-                            .foregroundStyle(isSelected ? Color("AppBackgroundColor") : Color("AppPrimaryColor"))
+                            .foregroundStyle(isSelected ? AppColor.background : AppColor.primary)
                         Spacer()
                         Image(systemName: "bookmark.fill")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(Color("AppTertiaryColor"))
+                            .foregroundStyle(AppColor.tertiary)
                             .opacity(isBookmarked ? 1 : 0)
                     }
                     .padding(.vertical, 4)
@@ -118,5 +118,5 @@ struct DayCell: View {
     
     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
         .padding(24)
-        .background(Color("AppBackgroundColor"))
+        .background(AppColor.background)
 }

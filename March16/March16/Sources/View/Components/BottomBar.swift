@@ -61,7 +61,7 @@ struct BottomBarButton<Label: View>: View {
             action()
         } label: {
             Circle()
-                .fill(Color("AppBackgroundColor"))
+                .fill(AppColor.background)
                 .frame(width: 48, height: 48)
                 .overlay(
                     label
@@ -69,7 +69,7 @@ struct BottomBarButton<Label: View>: View {
                         .font(.system(size: 22, weight: .semibold))
                 )
         }
-        .foregroundStyle(Color("AppPrimaryColor"))
+        .foregroundStyle(AppColor.primary)
     }
 }
 

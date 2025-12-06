@@ -23,7 +23,7 @@ struct ContentView: View {
                     VerseView(dailyVerse: dailyVerse)
                     Spacer()
                 }
-                .background(Color("AppBackgroundColor"))
+                .background(AppColor.background)
                 BottomBar(
                     isCalendarPresented: $isCalendarPresented,
                     isBookmarked: $isBookmarked,
@@ -61,7 +61,7 @@ struct DateView: View {
                 .font(.system(size: 128, weight: .black, design: .serif))
                 .frame(height: 128)
         }
-        .foregroundStyle(Color("AppPrimaryColor"))
+        .foregroundStyle(AppColor.primary)
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.horizontal, 32)
         .padding(.top, 48)
