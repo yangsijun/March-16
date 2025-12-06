@@ -76,6 +76,16 @@
           }
         }
       }
+    },
+    "Today's Verse" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘의 말씀"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -10,10 +10,22 @@ import SwiftData
 
 @main
 struct March16App: App {
+    init() {
+        setupNotifications()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .modelContainer(for: Bookmark.self)
+    }
+
+    private func setupNotifications() {
+        NotificationManager.shared.requestAuthorization { granted in
+            if granted {
+                NotificationManager.shared.scheduleDailyNotification()
+            }
+        }
     }
 }
