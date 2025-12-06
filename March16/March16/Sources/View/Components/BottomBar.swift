@@ -9,10 +9,11 @@ import SwiftUI
 
 struct BottomBar: View {
     @Binding var isCalendarPresented: Bool
-    @Binding var isBookmarked: Bool
+    var isBookmarked: Bool
     @Binding var isShareSheetPresented: Bool
     @Binding var calendarDate: Date
     @Binding var selectedDate: Date?
+    var onBookmarkTapped: () -> Void
 
     var body: some View {
         VStack {
@@ -27,12 +28,12 @@ struct BottomBar: View {
                 } label: {
                     Label("Calendar", systemImage: "calendar")
                 }
-                
+
                 Spacer()
-                
+
                 BottomBarButton {
                     withAnimation {
-                        isBookmarked.toggle()
+                        onBookmarkTapped()
                     }
                 } label: {
                     Label("Bookmark", systemImage: isBookmarked ? "bookmark.fill" : "bookmark")
@@ -86,6 +87,13 @@ struct BottomBarButton<Label: View>: View {
 
     VStack {
         Spacer()
-        BottomBar(isCalendarPresented: $isCalendarPresented, isBookmarked: $isBookmarked, isShareSheetPresented: $isShareSheetPresented, calendarDate: $calendarDate, selectedDate: $selectedDate)
+        BottomBar(
+            isCalendarPresented: $isCalendarPresented,
+            isBookmarked: isBookmarked,
+            isShareSheetPresented: $isShareSheetPresented,
+            calendarDate: $calendarDate,
+            selectedDate: $selectedDate,
+            onBookmarkTapped: { isBookmarked.toggle() }
+        )
     }
 }

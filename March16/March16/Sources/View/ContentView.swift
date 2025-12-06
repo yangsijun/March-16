@@ -9,16 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var bookmarks: [Bookmark]
+
     @State private var isCalendarPresented: Bool = false
-    @State private var isBookmarked: Bool = false
     @State private var isShareSheetPresented: Bool = false
     @State private var calendarDate: Date = Date()
     @State private var selectedDate: Date? = Date()
-    
+
     var dailyVerse: DailyVerse {
         DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
     }
-    
+
+    var isBookmarked: Bool {
+        bookmarks.contains { $0.dailyVerseId == dailyVerse.id }
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -30,10 +36,11 @@ struct ContentView: View {
                 .background(AppColor.background)
                 BottomBar(
                     isCalendarPresented: $isCalendarPresented,
-                    isBookmarked: $isBookmarked,
+                    isBookmarked: isBookmarked,
                     isShareSheetPresented: $isShareSheetPresented,
                     calendarDate: $calendarDate,
-                    selectedDate: $selectedDate
+                    selectedDate: $selectedDate,
+                    onBookmarkTapped: toggleBookmark
                 )
                 CalendarView(isPresented: $isCalendarPresented, date: $calendarDate, selectedDate: $selectedDate)
                     .opacity(isCalendarPresented ? 1 : 0)
@@ -41,6 +48,15 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isShareSheetPresented) {
             Text("ShareView")
+        }
+    }
+
+    private func toggleBookmark() {
+        if let existingBookmark = bookmarks.first(where: { $0.dailyVerseId == dailyVerse.id }) {
+            modelContext.delete(existingBookmark)
+        } else {
+            let bookmark = Bookmark(dailyVerseId: dailyVerse.id)
+            modelContext.insert(bookmark)
         }
     }
 }
@@ -77,4 +93,5 @@ struct DateView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Bookmark.self, inMemory: true)
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct March16App: App {
@@ -13,5 +14,6 @@ struct March16App: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Bookmark.self)
     }
 }

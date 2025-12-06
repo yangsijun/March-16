@@ -6,18 +6,25 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MonthCalendar: View {
+    @Query private var bookmarks: [Bookmark]
+
     @State var currentMonth: Date
     @Binding private var selectedDate: Date?
     private var displayDays: [[Date?]]
-    
+
+    private var bookmarkedDailyVerseIds: Set<Int> {
+        Set(bookmarks.map { $0.dailyVerseId })
+    }
+
     init(currentMonth: Date, selectedDate: Binding<Date?>) {
         self.currentMonth = currentMonth
         self._selectedDate = selectedDate
         self.displayDays = currentMonth.extractCalendarMatrix()
     }
-    
+
     var body: some View {
         LazyVStack(alignment: .center, spacing: 4) {
             dayOfWeekRow(spacing: 4)
@@ -26,7 +33,8 @@ struct MonthCalendar: View {
                     ForEach(week, id: \.self) { date in
                         DayCell(
                             date: date,
-                            selectedDate: $selectedDate
+                            selectedDate: $selectedDate,
+                            bookmarkedDailyVerseIds: bookmarkedDailyVerseIds
                         )
                     }
                 }
@@ -71,7 +79,12 @@ struct DayCell: View {
         guard let date, let selectedDate else { return false }
         return date.isSameDay(as: selectedDate)
     }
-    var isBookmarked: Bool = false
+    var bookmarkedDailyVerseIds: Set<Int> = []
+    var isBookmarked: Bool {
+        guard let date else { return false }
+        guard let dailyVerse = DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: date) else { return false }
+        return bookmarkedDailyVerseIds.contains(dailyVerse.id)
+    }
     var isFuture: Bool {
         guard let date else { return false }
         return date.timeIntervalSinceNow > 0
@@ -120,8 +133,9 @@ struct DayCell: View {
 #Preview {
     @Previewable @State var selectedDate: Date? = Date()
     let date = Date()
-    
+
     MonthCalendar(currentMonth: date, selectedDate: $selectedDate)
         .padding(24)
         .background(AppColor.background)
+        .modelContainer(for: Bookmark.self, inMemory: true)
 }
