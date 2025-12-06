@@ -45,10 +45,16 @@ struct CalendarView: View {
                                     systemImage: isBookmarked ? "bookmark.slash" : "bookmark"
                                 )
                             }
+                            Divider()
                             Button {
                                 isShareSheetPresented = true
                             } label: {
                                 Label("Share", systemImage: "square.and.arrow.up")
+                            }
+                            Button {
+                                UIPasteboard.general.string = "[\(selectedDailyVerse.referenceString)] \(selectedDailyVerse.content)"
+                            } label: {
+                                Label("Copy", systemImage: "doc.on.doc")
                             }
                         }
                 }

@@ -31,6 +31,13 @@ struct ContentView: View {
                 VStack(spacing: 0) {
                     DateView(date: Date())
                     VerseView(dailyVerse: dailyVerse)
+                        .contextMenu {
+                            Button {
+                                UIPasteboard.general.string = "[\(dailyVerse.referenceString)] \(dailyVerse.content)"
+                            } label: {
+                                Label("Copy", systemImage: "doc.on.doc")
+                            }
+                        }
                     Spacer()
                 }
                 .background(AppColor.background)

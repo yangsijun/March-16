@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VerseView: View {
     var dailyVerse: DailyVerse
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(dailyVerse.content)
@@ -29,7 +29,7 @@ struct VerseView: View {
 
 struct MiniVerseView: View {
     var dailyVerse: DailyVerse
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(dailyVerse.content)
