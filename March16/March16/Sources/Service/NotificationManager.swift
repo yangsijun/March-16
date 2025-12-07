@@ -62,8 +62,8 @@ final class NotificationManager {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Today's Verse")
-        content.body = dailyVerse.content
+        content.title = "\(String(localized: "Today's Verse")) - \(date.formatted(Date.FormatStyle().month().day()))"
+        content.body = "[\(dailyVerse.referenceString)] \(dailyVerse.content)"
         content.sound = .default
 
         let calendar = Calendar.current
