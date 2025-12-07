@@ -85,5 +85,13 @@ final class UserSettings {
         } else {
             self.isNotificationEnabled = true
         }
+
+        // Sync to shared UserDefaults for widget on init
+        syncToWidget()
+    }
+
+    func syncToWidget() {
+        sharedDefaults?.set(selectedVersion?.rawValue, forKey: Keys.selectedVersion)
+        WidgetCenter.shared.reloadTimelines(ofKind: "March16Widget")
     }
 }
