@@ -13,12 +13,10 @@ enum AppFont {
     case dateMonthLarge
     case dateMonthSmall
     case dateDayLarge
-    case dateDayMedium
 
     // Verse
     case verseContent
     case verseContentMini
-    case verseContentShare
     case verseReference
 
     // Calendar
@@ -26,6 +24,12 @@ enum AppFont {
     case calendarDay(isToday: Bool)
     case calendarBookmarkIcon
     case calendarBottomBar
+
+    // Share Card
+    case shareDateMonth
+    case shareDateDay
+    case shareVerseContent
+    case shareVerseReference
 
     // Button
     case shareButton
@@ -47,9 +51,6 @@ enum AppFont {
         case .dateDayLarge:
             return .system(size: 128, weight: .black, design: .serif)
 
-        case .dateDayMedium:
-            return .system(size: 120, weight: .black, design: .serif)
-
         case .verseContent:
             return isKorean
                 ? .custom("KoPubBatangPM", size: 21)
@@ -59,11 +60,6 @@ enum AppFont {
             return isKorean
                 ? .custom("KoPubBatangPM", size: 16)
                 : .system(size: 17, weight: .regular, design: .serif)
-
-        case .verseContentShare:
-            return isKorean
-                ? .custom("KoPubBatangPM", size: 18)
-                : .system(size: 20, weight: .regular, design: .serif)
 
         case .verseReference:
             return .system(size: 14, weight: .regular)
@@ -81,6 +77,20 @@ enum AppFont {
             return isKorean
                 ? .custom("KoPubBatangPM", size: 13)
                 : .system(size: 14, weight: .semibold, design: .serif)
+
+        case .shareDateMonth:
+            return .system(size: 32, weight: .bold, design: .serif)
+
+        case .shareDateDay:
+            return .system(size: 120, weight: .black, design: .serif)
+
+        case .shareVerseContent:
+            return isKorean
+                ? .custom("KoPubBatangPM", size: 17)
+                : .system(size: 19, weight: .regular, design: .serif)
+
+        case .shareVerseReference:
+            return .system(size: 13, weight: .regular)
 
         case .shareButton:
             return .system(size: 17, weight: .semibold)

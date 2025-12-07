@@ -147,23 +147,25 @@ struct ShareCardView: View {
 
             VStack(spacing: 0) {
                 Text(monthString)
-                    .appFont(.dateMonthSmall)
+                    .appFont(.shareDateMonth)
+                    .frame(height: 32)
                 Text(dayString)
-                    .appFont(.dateDayMedium)
+                    .appFont(.shareDateDay)
+                    .frame(height: 120)
             }
             .foregroundStyle(AppColor.primary)
 
             Spacer()
-                .frame(height: 32)
+                .frame(height: 24)
 
             VStack(alignment: .leading, spacing: 16) {
                 Text(dailyVerse.content)
-                    .appFont(.verseContentShare)
+                    .appFont(.shareVerseContent)
                     .italic()
                     .lineSpacing(4)
                     .foregroundStyle(AppColor.primary)
                 Text(dailyVerse.referenceString)
-                    .appFont(.verseReference)
+                    .appFont(.shareVerseReference)
                     .foregroundStyle(AppColor.tertiary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
