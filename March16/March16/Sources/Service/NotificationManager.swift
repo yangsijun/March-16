@@ -10,8 +10,14 @@ import UserNotifications
 
 final class NotificationManager {
     static let shared = NotificationManager()
-    private let notificationHour = 9
-    private let notificationMinute = 0
+
+    private var notificationHour: Int {
+        UserSettings.shared.notificationHour
+    }
+
+    private var notificationMinute: Int {
+        UserSettings.shared.notificationMinute
+    }
 
     private init() {}
 
@@ -80,6 +86,11 @@ final class NotificationManager {
                 print("Failed to schedule notification: \(error.localizedDescription)")
             }
         }
+    }
+
+    func cancelAllNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: getDailyVerseIdentifiers())
     }
 
     private func getDailyVerseIdentifiers() -> [String] {
