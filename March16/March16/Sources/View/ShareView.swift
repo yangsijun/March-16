@@ -43,7 +43,7 @@ struct ShareView: View {
     @State private var renderedImage: UIImage?
 
     var body: some View {
-        NavigationStack {
+        ZStack {
             VStack(spacing: 24) {
                 ShareCardView(date: date, dailyVerse: dailyVerse)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -67,20 +67,13 @@ struct ShareView: View {
 
                 Spacer()
             }
-            .padding(.top, 24)
-            .background(AppColor.background)
-            .navigationTitle("Share")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                }
+            .padding(.top, 72)
+
+            ShareTopBar {
+                dismiss()
             }
         }
+        .background(AppColor.background)
         .onAppear {
             renderImage()
         }
@@ -119,6 +112,32 @@ struct ShareView: View {
             }
             activityVC.popoverPresentationController?.sourceView = topVC.view
             topVC.present(activityVC, animated: true)
+        }
+    }
+}
+
+struct ShareTopBar: View {
+    var onDismiss: () -> Void
+
+    var body: some View {
+        VStack {
+            ZStack {
+                Text(String(localized: "Share"))
+                    .font(.headline)
+                    .foregroundStyle(AppColor.primary)
+
+                HStack(spacing: 12) {
+                    BottomBarButton {
+                        onDismiss()
+                    } label: {
+                        Label(String(localized: "Dismiss"), systemImage: "xmark")
+                    }
+                    Spacer()
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+            Spacer()
         }
     }
 }

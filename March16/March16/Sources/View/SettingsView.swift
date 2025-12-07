@@ -45,7 +45,7 @@ struct SettingsView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        ZStack {
             List {
                 Section {
                     Picker(String(localized: "Bible Version"), selection: $selectedVersion) {
@@ -75,39 +75,31 @@ struct SettingsView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(AppColor.background)
-            .navigationTitle(String(localized: "Settings"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        if hasChanges {
-                            showDiscardAlert = true
-                        } else {
-                            dismiss()
-                        }
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        saveSettings()
+            .contentMargins(.top, 80, for: .scrollContent)
+
+            SettingsTopBar(
+                onDismiss: {
+                    if hasChanges {
+                        showDiscardAlert = true
+                    } else {
                         dismiss()
-                    } label: {
-                        Image(systemName: "checkmark")
                     }
-                }
-            }
-            .interactiveDismissDisabled(hasChanges)
-            .alert(String(localized: "Discard Changes?"), isPresented: $showDiscardAlert) {
-                Button(String(localized: "Discard"), role: .destructive) {
+                },
+                onSave: {
+                    saveSettings()
                     dismiss()
                 }
-                Button(String(localized: "Cancel"), role: .cancel) {}
-            } message: {
-                Text(String(localized: "Your changes will not be saved."))
+            )
+        }
+        .background(AppColor.background)
+        .interactiveDismissDisabled(hasChanges)
+        .alert(String(localized: "Discard Changes?"), isPresented: $showDiscardAlert) {
+            Button(String(localized: "Discard"), role: .destructive) {
+                dismiss()
             }
+            Button(String(localized: "Cancel"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "Your changes will not be saved."))
         }
     }
 
@@ -131,6 +123,39 @@ struct SettingsView: View {
             NotificationManager.shared.scheduleDailyNotification()
         } else {
             NotificationManager.shared.cancelAllNotifications()
+        }
+    }
+}
+
+struct SettingsTopBar: View {
+    var onDismiss: () -> Void
+    var onSave: () -> Void
+
+    var body: some View {
+        VStack {
+            ZStack {
+                Text(String(localized: "Settings"))
+                    .font(.headline)
+                    .foregroundStyle(AppColor.primary)
+
+                HStack(spacing: 12) {
+                    BottomBarButton {
+                        onDismiss()
+                    } label: {
+                        Label(String(localized: "Dismiss"), systemImage: "xmark")
+                    }
+                    Spacer()
+                    BottomBarButton {
+                        onSave()
+                    } label: {
+                        Label(String(localized: "Done"), systemImage: "checkmark")
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+            .background(AppColor.background)
+            Spacer()
         }
     }
 }
