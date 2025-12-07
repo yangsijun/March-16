@@ -70,38 +70,69 @@ private enum WidgetBibleVersion: String {
 final class WidgetDataManager {
     static let shared = WidgetDataManager()
 
-    private var mainDbQueue: DatabaseQueue?
-    private var kjvDbQueue: DatabaseQueue?
+    private let appGroupIdentifier = "group.dev.sijun.March16"
+    private var _mainDbQueue: DatabaseQueue?
+    private var _kjvDbQueue: DatabaseQueue?
 
-    private init() {
-        setupDatabase()
+    private var sharedContainerURL: URL? {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
     }
 
-    private func setupDatabase() {
-        // Setup main database (NKRV, WEBBE)
-        if let dbPath = Bundle.main.path(forResource: "March16DB", ofType: "sqlite") {
-            do {
-                var config = Configuration()
-                config.readonly = true
-                mainDbQueue = try DatabaseQueue(path: dbPath, configuration: config)
-            } catch {
-                print("[Widget] Failed to open main database: \(error)")
-            }
-        } else {
-            print("[Widget] March16DB.sqlite not found in widget bundle")
+    private init() {}
+
+    /// Lazily loads the main database, retrying if not previously found
+    private var mainDbQueue: DatabaseQueue? {
+        // If already loaded, return it
+        if let db = _mainDbQueue { return db }
+
+        // If we checked before and it wasn't there, check again (app might have copied it)
+        guard let containerURL = sharedContainerURL else {
+            print("[Widget] Shared container not available")
+            return nil
         }
 
-        // Setup KJV database
-        if let kjvPath = Bundle.main.path(forResource: "March16DB_KJV", ofType: "sqlite") {
+        let mainDbPath = containerURL.appendingPathComponent("March16DB.sqlite").path
+        if FileManager.default.fileExists(atPath: mainDbPath) {
             do {
                 var config = Configuration()
                 config.readonly = true
-                kjvDbQueue = try DatabaseQueue(path: kjvPath, configuration: config)
+                _mainDbQueue = try DatabaseQueue(path: mainDbPath, configuration: config)
+                print("[Widget] Main database loaded from shared container")
+                return _mainDbQueue
             } catch {
-                print("[Widget] Failed to open KJV database: \(error)")
+                print("[Widget] Failed to open main database: \(error)")
+                return nil
             }
         } else {
-            print("[Widget] March16DB_KJV.sqlite not found in widget bundle")
+            print("[Widget] March16DB.sqlite not found in shared container")
+            return nil
+        }
+    }
+
+    /// Lazily loads the KJV database, retrying if not previously found
+    private var kjvDbQueue: DatabaseQueue? {
+        // If already loaded, return it
+        if let db = _kjvDbQueue { return db }
+
+        guard let containerURL = sharedContainerURL else {
+            return nil
+        }
+
+        let kjvDbPath = containerURL.appendingPathComponent("March16DB_KJV.sqlite").path
+        if FileManager.default.fileExists(atPath: kjvDbPath) {
+            do {
+                var config = Configuration()
+                config.readonly = true
+                _kjvDbQueue = try DatabaseQueue(path: kjvDbPath, configuration: config)
+                print("[Widget] KJV database loaded from shared container")
+                return _kjvDbQueue
+            } catch {
+                print("[Widget] Failed to open KJV database: \(error)")
+                return nil
+            }
+        } else {
+            print("[Widget] March16DB_KJV.sqlite not found in shared container")
+            return nil
         }
     }
 

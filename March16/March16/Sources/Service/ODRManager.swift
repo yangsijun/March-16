@@ -36,6 +36,8 @@ final class ODRManager {
             DispatchQueue.main.async {
                 if isAvailable {
                     self?.isKJVAvailable = true
+                    // Copy to shared container for widget access
+                    SharedDatabaseManager.shared.copyKJVDatabaseToSharedContainer()
                     completion(true)
                 } else {
                     // Not cached, need to download
@@ -64,6 +66,8 @@ final class ODRManager {
 
                 print("[ODR] Download successful")
                 self?.isKJVAvailable = true
+                // Copy to shared container for widget access
+                SharedDatabaseManager.shared.copyKJVDatabaseToSharedContainer()
                 completion(true)
             }
         }

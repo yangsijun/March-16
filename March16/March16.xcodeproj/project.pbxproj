@@ -78,8 +78,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Resources/KoPub Batang_Pro Medium.otf",
-				Resources/March16DB_KJV.sqlite,
-				Resources/March16DB.sqlite,
 			);
 			target = ED5308332EE586480069B8F9 /* March16WidgetExtension */;
 		};

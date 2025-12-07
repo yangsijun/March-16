@@ -38,6 +38,9 @@ struct March16App: App {
     }
 
     private func initializeApp() async {
+        // Setup shared database for widget access
+        SharedDatabaseManager.shared.setupSharedDatabase()
+
         // Fetch storefront region info
         await RegionManager.shared.fetchStorefront()
         print("[March16] Storefront country: \(RegionManager.shared.storefrontCountryCode ?? "nil"), isUK: \(RegionManager.shared.isUK)")
