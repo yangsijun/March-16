@@ -14,4 +14,5 @@ enum AppColor {
     static let tertiary = Color("AppTertiaryColor")
     static let quaternary = Color("AppQuaternaryColor")
     static let accent = Color.accentColor
+    static let groupedBackground = Color("AppGroupedBackgroundColor")
 }

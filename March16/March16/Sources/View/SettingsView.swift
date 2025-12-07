@@ -16,12 +16,32 @@ struct SettingsView: View {
     @State private var selectedVersion: BibleVersion
     @State private var isNotificationEnabled: Bool
     @State private var notificationTime: Date
+    @State private var showDiscardAlert: Bool = false
+
+    // Initial values to detect changes
+    private let initialVersion: BibleVersion
+    private let initialNotificationEnabled: Bool
+    private let initialNotificationTime: Date
+
+    private var hasChanges: Bool {
+        selectedVersion != initialVersion ||
+        isNotificationEnabled != initialNotificationEnabled ||
+        notificationTime != initialNotificationTime
+    }
 
     init() {
         let settings = UserSettings.shared
-        _selectedVersion = State(initialValue: settings.selectedVersion ?? BibleVersion.current)
-        _isNotificationEnabled = State(initialValue: settings.isNotificationEnabled)
-        _notificationTime = State(initialValue: settings.notificationTime)
+        let version = settings.selectedVersion ?? BibleVersion.current
+        let notificationEnabled = settings.isNotificationEnabled
+        let notificationTime = settings.notificationTime
+
+        _selectedVersion = State(initialValue: version)
+        _isNotificationEnabled = State(initialValue: notificationEnabled)
+        _notificationTime = State(initialValue: notificationTime)
+
+        self.initialVersion = version
+        self.initialNotificationEnabled = notificationEnabled
+        self.initialNotificationTime = notificationTime
     }
 
     var body: some View {
@@ -59,6 +79,17 @@ struct SettingsView: View {
             .navigationTitle(String(localized: "Settings"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        if hasChanges {
+                            showDiscardAlert = true
+                        } else {
+                            dismiss()
+                        }
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         saveSettings()
@@ -67,6 +98,15 @@ struct SettingsView: View {
                         Image(systemName: "checkmark")
                     }
                 }
+            }
+            .interactiveDismissDisabled(hasChanges)
+            .alert(String(localized: "Discard Changes?"), isPresented: $showDiscardAlert) {
+                Button(String(localized: "Discard"), role: .destructive) {
+                    dismiss()
+                }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "Your changes will not be saved."))
             }
         }
     }

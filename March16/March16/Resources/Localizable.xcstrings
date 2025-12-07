@@ -11,6 +11,26 @@
         }
       }
     },
+    "Bible" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "성경"
+          }
+        }
+      }
+    },
+    "Bible Version" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "역본"
+          }
+        }
+      }
+    },
     "Bookmark" : {
 
     },
@@ -27,6 +47,16 @@
         }
       }
     },
+    "Daily Notification" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "매일 알림"
+          }
+        }
+      }
+    },
     "Dismiss" : {
       "localizations" : {
         "ko" : {
@@ -37,12 +67,43 @@
         }
       }
     },
+    "Done" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "완료"
+          }
+        }
+      }
+    },
     "Next" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "이전달"
+          }
+        }
+      }
+    },
+    "Notification" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림"
+          }
+        }
+      }
+    },
+    "Notification Time" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림 시간"
           }
         }
       }
@@ -67,6 +128,16 @@
         }
       }
     },
+    "Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        }
+      }
+    },
     "Share" : {
       "localizations" : {
         "ko" : {
@@ -87,72 +158,42 @@
         }
       }
     },
-    "Settings" : {
+    "Discard Changes?" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "설정"
+            "value" : "변경 사항을 취소하시겠습니까?"
           }
         }
       }
     },
-    "Bible" : {
+    "Discard" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "성경"
+            "value" : "취소"
           }
         }
       }
     },
-    "Bible Version" : {
+    "Cancel" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "역본"
+            "value" : "돌아가기"
           }
         }
       }
     },
-    "Notification" : {
+    "Your changes will not be saved." : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "알림"
-          }
-        }
-      }
-    },
-    "Daily Notification" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "매일 알림"
-          }
-        }
-      }
-    },
-    "Notification Time" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "알림 시간"
-          }
-        }
-      }
-    },
-    "Done" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "완료"
+            "value" : "변경 사항이 저장되지 않습니다."
           }
         }
       }
