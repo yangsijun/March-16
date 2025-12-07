@@ -12,6 +12,8 @@ struct CalendarView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
 
+    var userSettings = UserSettings.shared
+
     @Binding var isPresented: Bool
     @Binding var date: Date
     @Binding var selectedDate: Date?
@@ -19,6 +21,8 @@ struct CalendarView: View {
     @State private var isShareSheetPresented: Bool = false
 
     private var selectedDailyVerse: DailyVerse {
+        // Access userSettings to trigger refresh when version changes
+        _ = userSettings.selectedVersion
         guard let selectedDate else { return .placeholder }
         return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder
     }

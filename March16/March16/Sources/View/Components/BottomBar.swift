@@ -11,6 +11,7 @@ struct BottomBar: View {
     @Binding var isCalendarPresented: Bool
     var isBookmarked: Bool
     @Binding var isShareSheetPresented: Bool
+    @Binding var isSettingsPresented: Bool
     @Binding var calendarDate: Date
     @Binding var selectedDate: Date?
     var onBookmarkTapped: () -> Void
@@ -44,6 +45,11 @@ struct BottomBar: View {
                     }
                 } label: {
                     Label("Share", systemImage: "square.and.arrow.up")
+                }
+                BottomBarButton {
+                    isSettingsPresented = true
+                } label: {
+                    Label("Settings", systemImage: "gearshape")
                 }
             }
             .padding(.horizontal, 16)
@@ -82,6 +88,7 @@ struct BottomBarButton<Label: View>: View {
     @Previewable @State var isCalendarPresented: Bool = false
     @Previewable @State var isBookmarked: Bool = false
     @Previewable @State var isShareSheetPresented: Bool = false
+    @Previewable @State var isSettingsPresented: Bool = false
     @Previewable @State var calendarDate: Date = Date()
     @Previewable @State var selectedDate: Date? = Date()
 
@@ -91,6 +98,7 @@ struct BottomBarButton<Label: View>: View {
             isCalendarPresented: $isCalendarPresented,
             isBookmarked: isBookmarked,
             isShareSheetPresented: $isShareSheetPresented,
+            isSettingsPresented: $isSettingsPresented,
             calendarDate: $calendarDate,
             selectedDate: $selectedDate,
             onBookmarkTapped: { isBookmarked.toggle() }

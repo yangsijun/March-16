@@ -13,15 +13,18 @@ struct ContentView: View {
     @Query private var bookmarks: [Bookmark]
 
     var appState = AppState.shared
+    var userSettings = UserSettings.shared
 
     @State private var isCalendarPresented: Bool = false
     @State private var isShareSheetPresented: Bool = false
+    @State private var isSettingsPresented: Bool = false
     @State private var calendarDate: Date = Date()
     @State private var selectedDate: Date? = Date()
 
     var dailyVerse: DailyVerse {
-        // Access appState.isKJVReady to trigger refresh when KJV becomes available
+        // Access appState and userSettings to trigger refresh when they change
         _ = appState.isKJVReady
+        _ = userSettings.selectedVersion
         return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
     }
 
@@ -49,6 +52,7 @@ struct ContentView: View {
                     isCalendarPresented: $isCalendarPresented,
                     isBookmarked: isBookmarked,
                     isShareSheetPresented: $isShareSheetPresented,
+                    isSettingsPresented: $isSettingsPresented,
                     calendarDate: $calendarDate,
                     selectedDate: $selectedDate,
                     onBookmarkTapped: toggleBookmark
@@ -59,6 +63,9 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isShareSheetPresented) {
             ShareView(date: Date(), dailyVerse: dailyVerse)
+        }
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView()
         }
     }
 
