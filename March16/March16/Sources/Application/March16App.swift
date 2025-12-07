@@ -51,11 +51,15 @@ struct March16App: App {
                     DatabaseManager.shared.attachKJVDatabase()
                     print("[March16] KJV database attached: \(DatabaseManager.shared.isKJVAttached)")
                     AppState.shared.markKJVReady()
+                    print("[March16] AppState.isKJVReady: \(AppState.shared.isKJVReady)")
+                } else {
+                    print("[March16] KJV database request failed")
                 }
                 // Schedule notifications after KJV is ready
                 self.scheduleNotificationsIfAuthorized()
             }
         } else {
+            print("[March16] UK region - skipping KJV")
             // UK region - schedule notifications with WEBBE
             scheduleNotificationsIfAuthorized()
         }
