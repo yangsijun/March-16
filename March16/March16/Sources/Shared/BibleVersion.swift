@@ -22,6 +22,16 @@ enum BibleVersion: String, CaseIterable {
     }
 
     static var current: BibleVersion {
+        // User preference takes priority
+        if let userSelected = UserSettings.shared.selectedVersion {
+            // If user selected KJV but it's not available, fall back to WEBBE
+            if userSelected == .kjv && !DatabaseManager.shared.isKJVAttached {
+                return .webbe
+            }
+            return userSelected
+        }
+
+        // Default based on language and region
         let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
         return version(for: languageCode)
     }
