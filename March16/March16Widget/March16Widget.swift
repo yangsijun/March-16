@@ -107,10 +107,10 @@ struct SmallWidgetView: View {
             // Date
             VStack(spacing: 0) {
                 Text(monthString)
-                    .font(.system(size: 14, weight: .bold, design: .serif))
+                    .widgetFont(.smallDateMonth)
                     .frame(height: 14)
                 Text(dayString)
-                    .font(.system(size: 48, weight: .black, design: .serif))
+                    .widgetFont(.smallDateDay)
                     .frame(height: 48)
             }
             .foregroundStyle(WidgetColor.primary)
@@ -119,7 +119,7 @@ struct SmallWidgetView: View {
 
             // Verse Reference
             Text(entry.verse.referenceString)
-                .font(.system(size: 11, weight: .regular))
+                .widgetFont(.smallVerseReference)
                 .foregroundStyle(WidgetColor.tertiary)
 
             Spacer()
@@ -153,10 +153,10 @@ struct MediumWidgetView: View {
             // Date
             VStack(spacing: 0) {
                 Text(monthString)
-                    .font(.system(size: 16, weight: .bold, design: .serif))
+                    .widgetFont(.mediumDateMonth)
                     .frame(height: 16)
                 Text(dayString)
-                    .font(.system(size: 56, weight: .black, design: .serif))
+                    .widgetFont(.mediumDateDay)
                     .frame(height: 56)
             }
             .foregroundStyle(WidgetColor.primary)
@@ -165,12 +165,11 @@ struct MediumWidgetView: View {
             // Verse
             VStack(alignment: .leading, spacing: 8) {
                 Text(entry.verse.content)
-                    .font(.system(size: 13, weight: .regular, design: .serif))
-                    .italic()
+                    .widgetFont(.mediumVerseContent)
                     .foregroundStyle(WidgetColor.primary)
 
                 Text(entry.verse.referenceString)
-                    .font(.system(size: 11, weight: .regular))
+                    .widgetFont(.mediumVerseReference)
                     .foregroundStyle(WidgetColor.tertiary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -206,10 +205,10 @@ struct LargeWidgetView: View {
             // Date
             VStack(spacing: 0) {
                 Text(monthString)
-                    .font(.system(size: 24, weight: .bold, design: .serif))
+                    .widgetFont(.largeDateMonth)
                     .frame(height: 24)
                 Text(dayString)
-                    .font(.system(size: 96, weight: .black, design: .serif))
+                    .widgetFont(.largeDateDay)
                     .frame(height: 96)
             }
             .foregroundStyle(WidgetColor.primary)
@@ -220,13 +219,12 @@ struct LargeWidgetView: View {
             // Verse
             VStack(alignment: .leading, spacing: 12) {
                 Text(entry.verse.content)
-                    .font(.system(size: 17, weight: .regular, design: .serif))
-                    .italic()
+                    .widgetFont(.largeVerseContent)
                     .lineSpacing(1)
                     .foregroundStyle(WidgetColor.primary)
 
                 Text(entry.verse.referenceString)
-                    .font(.system(size: 13, weight: .regular))
+                    .widgetFont(.largeVerseReference)
                     .foregroundStyle(WidgetColor.tertiary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -244,6 +242,81 @@ enum WidgetColor {
     static let background = Color("AppBackgroundColor")
     static let primary = Color("AppPrimaryColor")
     static let tertiary = Color("AppTertiaryColor")
+}
+
+// MARK: - Widget Fonts
+
+enum WidgetFont {
+    // Small Widget
+    case smallDateMonth
+    case smallDateDay
+    case smallVerseReference
+
+    // Medium Widget
+    case mediumDateMonth
+    case mediumDateDay
+    case mediumVerseContent
+    case mediumVerseReference
+
+    // Large Widget
+    case largeDateMonth
+    case largeDateDay
+    case largeVerseContent
+    case largeVerseReference
+
+    private static var isKorean: Bool {
+        let defaults = UserDefaults(suiteName: "group.dev.sijun.March16")
+        let code = defaults?.string(forKey: "selectedBibleVersion")
+        if let code = code {
+            return code == "NKRV"
+        }
+        // Default based on locale
+        return Locale.current.language.languageCode?.identifier == "ko"
+    }
+
+    var font: Font {
+        let isKorean = Self.isKorean
+
+        switch self {
+        // Small Widget
+        case .smallDateMonth:
+            return .system(size: 14, weight: .bold, design: .serif)
+        case .smallDateDay:
+            return .system(size: 48, weight: .black, design: .serif)
+        case .smallVerseReference:
+            return .system(size: 11, weight: .regular)
+
+        // Medium Widget
+        case .mediumDateMonth:
+            return .system(size: 16, weight: .bold, design: .serif)
+        case .mediumDateDay:
+            return .system(size: 56, weight: .black, design: .serif)
+        case .mediumVerseContent:
+            return isKorean
+                ? .custom("KoPubBatangPM", size: 13)
+                : .system(size: 14, weight: .regular, design: .serif)
+        case .mediumVerseReference:
+            return .system(size: 11, weight: .regular)
+
+        // Large Widget
+        case .largeDateMonth:
+            return .system(size: 24, weight: .bold, design: .serif)
+        case .largeDateDay:
+            return .system(size: 96, weight: .black, design: .serif)
+        case .largeVerseContent:
+            return isKorean
+                ? .custom("KoPubBatangPM", size: 16)
+                : .system(size: 17, weight: .regular, design: .serif)
+        case .largeVerseReference:
+            return .system(size: 13, weight: .regular)
+        }
+    }
+}
+
+extension View {
+    func widgetFont(_ font: WidgetFont) -> some View {
+        self.font(font.font)
+    }
 }
 
 // MARK: - Preview

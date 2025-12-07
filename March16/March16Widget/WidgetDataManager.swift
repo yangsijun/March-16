@@ -48,6 +48,10 @@ private enum WidgetBibleVersion: String {
 
     var code: String { rawValue }
 
+    var requiresKJVDatabase: Bool {
+        self == .kjv
+    }
+
     static var current: WidgetBibleVersion {
         let defaults = UserDefaults(suiteName: "group.dev.sijun.March16")
         if let code = defaults?.string(forKey: "selectedBibleVersion"),
@@ -66,62 +70,103 @@ private enum WidgetBibleVersion: String {
 final class WidgetDataManager {
     static let shared = WidgetDataManager()
 
-    private var dbQueue: DatabaseQueue?
+    private var mainDbQueue: DatabaseQueue?
+    private var kjvDbQueue: DatabaseQueue?
 
     private init() {
         setupDatabase()
     }
 
     private func setupDatabase() {
-        guard let dbPath = Bundle.main.path(forResource: "March16DB", ofType: "sqlite") else {
-            print("March16DB.sqlite not found in widget bundle")
-            return
+        // Setup main database (NKRV, WEBBE)
+        if let dbPath = Bundle.main.path(forResource: "March16DB", ofType: "sqlite") {
+            do {
+                var config = Configuration()
+                config.readonly = true
+                mainDbQueue = try DatabaseQueue(path: dbPath, configuration: config)
+            } catch {
+                print("[Widget] Failed to open main database: \(error)")
+            }
+        } else {
+            print("[Widget] March16DB.sqlite not found in widget bundle")
         }
 
-        do {
-            var config = Configuration()
-            config.readonly = true
-            dbQueue = try DatabaseQueue(path: dbPath, configuration: config)
-        } catch {
-            print("Failed to open database: \(error)")
+        // Setup KJV database
+        if let kjvPath = Bundle.main.path(forResource: "March16DB_KJV", ofType: "sqlite") {
+            do {
+                var config = Configuration()
+                config.readonly = true
+                kjvDbQueue = try DatabaseQueue(path: kjvPath, configuration: config)
+            } catch {
+                print("[Widget] Failed to open KJV database: \(error)")
+            }
+        } else {
+            print("[Widget] March16DB_KJV.sqlite not found in widget bundle")
         }
     }
 
     func fetchDailyVerse(date: Date) -> WidgetDailyVerse? {
-        guard let db = dbQueue else { return nil }
+        guard let mainDb = mainDbQueue else {
+            print("[Widget] Main database not available")
+            return nil
+        }
 
         let calendar = Calendar.current
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
-        let versionCode = WidgetBibleVersion.current.code
+        let version = WidgetBibleVersion.current
 
         do {
-            return try db.read { db in
+            // Step 1: Get daily verse info from main database
+            let dailyVerseInfo = try mainDb.read { db -> (id: Int, chapter: Int, startVerse: Int, endVerse: Int?)? in
                 let sql = """
-                    SELECT dv.id, dv.month, dv.day, dv.book_key, dv.chapter, dv.start_verse, dv.end_verse,
-                           vt.book_name, vt.content
-                    FROM daily_verse dv
-                    JOIN verse_text vt ON dv.id = vt.daily_id
-                    WHERE dv.month = ? AND dv.day = ? AND vt.version_code = ?
+                    SELECT id, chapter, start_verse, end_verse
+                    FROM daily_verse
+                    WHERE month = ? AND day = ?
+                    LIMIT 1
+                    """
+                guard let row = try Row.fetchOne(db, sql: sql, arguments: [month, day]) else {
+                    return nil
+                }
+                return (
+                    id: row["id"],
+                    chapter: row["chapter"],
+                    startVerse: row["start_verse"],
+                    endVerse: row["end_verse"]
+                )
+            }
+
+            guard let info = dailyVerseInfo else {
+                print("[Widget] No daily verse found for \(month)/\(day)")
+                return nil
+            }
+
+            // Step 2: Get verse text from appropriate database
+            let verseDb = version.requiresKJVDatabase ? (kjvDbQueue ?? mainDb) : mainDb
+
+            return try verseDb.read { db in
+                let sql = """
+                    SELECT book_name, content
+                    FROM verse_text
+                    WHERE daily_id = ? AND version_code = ?
                     LIMIT 1
                     """
 
-                let row = try Row.fetchOne(db, sql: sql, arguments: [month, day, versionCode])
-
-                guard let row = row else { return nil }
-
-                let endVerse: Int? = row["end_verse"]
+                guard let row = try Row.fetchOne(db, sql: sql, arguments: [info.id, version.code]) else {
+                    print("[Widget] No verse text found for daily_id: \(info.id), version: \(version.code)")
+                    return nil
+                }
 
                 return WidgetDailyVerse(
                     book: row["book_name"],
-                    chapter: row["chapter"],
-                    startVerse: row["start_verse"],
-                    endVerse: endVerse,
+                    chapter: info.chapter,
+                    startVerse: info.startVerse,
+                    endVerse: info.endVerse,
                     content: row["content"]
                 )
             }
         } catch {
-            print("Failed to fetch daily verse: \(error)")
+            print("[Widget] Failed to fetch daily verse: \(error)")
             return nil
         }
     }

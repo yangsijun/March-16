@@ -76,10 +76,8 @@
 		};
 		ED5308F92EE58B040069B8F9 /* Exceptions for "March16" folder in "March16WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			assetTagsByRelativePath = {
-				Resources/March16DB_KJV.sqlite = (kjv_db, );
-			};
 			membershipExceptions = (
+				"Resources/KoPub Batang_Pro Medium.otf",
 				Resources/March16DB_KJV.sqlite,
 				Resources/March16DB.sqlite,
 			);
@@ -307,6 +305,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZMW52M7L5;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
