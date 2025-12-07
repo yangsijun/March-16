@@ -10,7 +10,5 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Save daily verse images to your photo library.</string>
 </dict>
 </plist>
