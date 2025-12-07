@@ -7,10 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED5308372EE586480069B8F9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5308362EE586480069B8F9 /* WidgetKit.framework */; };
+		ED5308392EE586480069B8F9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED5308382EE586480069B8F9 /* SwiftUI.framework */; };
+		ED5308452EE586480069B8F9 /* March16WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = ED5308342EE586480069B8F9 /* March16WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ED5308F72EE58AF70069B8F9 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = ED5308F62EE58AF70069B8F9 /* GRDB */; };
 		ED70882B2EE4721500F7FC6F /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = ED70882A2EE4721500F7FC6F /* GRDB */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		ED5308422EE586480069B8F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED25CABE2EDDBF380023876A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED5308332EE586480069B8F9;
+			remoteInfo = March16WidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		ED5308442EE586480069B8F9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				ED5308452EE586480069B8F9 /* March16WidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED7088352EE474ED00F7FC6F /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -25,6 +50,10 @@
 
 /* Begin PBXFileReference section */
 		ED25CAC62EDDBF380023876A /* March16.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = March16.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED5308342EE586480069B8F9 /* March16WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = March16WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED5308362EE586480069B8F9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		ED5308382EE586480069B8F9 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		ED53084C2EE588370069B8F9 /* March16WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = March16WidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -38,6 +67,24 @@
 			);
 			target = ED25CAC52EDDBF380023876A /* March16 */;
 		};
+		ED5308492EE586480069B8F9 /* Exceptions for "March16Widget" folder in "March16WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = ED5308332EE586480069B8F9 /* March16WidgetExtension */;
+		};
+		ED5308F92EE58B040069B8F9 /* Exceptions for "March16" folder in "March16WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			assetTagsByRelativePath = {
+				Resources/March16DB_KJV.sqlite = (kjv_db, );
+			};
+			membershipExceptions = (
+				Resources/March16DB_KJV.sqlite,
+				Resources/March16DB.sqlite,
+			);
+			target = ED5308332EE586480069B8F9 /* March16WidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,8 +92,17 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				ED25CAD32EDDBF3A0023876A /* Exceptions for "March16" folder in "March16" target */,
+				ED5308F92EE58B040069B8F9 /* Exceptions for "March16" folder in "March16WidgetExtension" target */,
 			);
 			path = March16;
+			sourceTree = "<group>";
+		};
+		ED53083A2EE586480069B8F9 /* March16Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ED5308492EE586480069B8F9 /* Exceptions for "March16Widget" folder in "March16WidgetExtension" target */,
+			);
+			path = March16Widget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -60,13 +116,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED5308312EE586480069B8F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED5308F72EE58AF70069B8F9 /* GRDB in Frameworks */,
+				ED5308392EE586480069B8F9 /* SwiftUI.framework in Frameworks */,
+				ED5308372EE586480069B8F9 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		ED25CABD2EDDBF380023876A = {
 			isa = PBXGroup;
 			children = (
+				ED53084C2EE588370069B8F9 /* March16WidgetExtension.entitlements */,
 				ED25CAC82EDDBF380023876A /* March16 */,
+				ED53083A2EE586480069B8F9 /* March16Widget */,
+				ED5308352EE586480069B8F9 /* Frameworks */,
 				ED25CAC72EDDBF380023876A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,8 +144,18 @@
 			isa = PBXGroup;
 			children = (
 				ED25CAC62EDDBF380023876A /* March16.app */,
+				ED5308342EE586480069B8F9 /* March16WidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ED5308352EE586480069B8F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED5308362EE586480069B8F9 /* WidgetKit.framework */,
+				ED5308382EE586480069B8F9 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,10 +169,12 @@
 				ED25CAC32EDDBF380023876A /* Frameworks */,
 				ED25CAC42EDDBF380023876A /* Resources */,
 				ED7088352EE474ED00F7FC6F /* Embed Frameworks */,
+				ED5308442EE586480069B8F9 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				ED5308432EE586480069B8F9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				ED25CAC82EDDBF380023876A /* March16 */,
@@ -105,6 +186,29 @@
 			productName = March16;
 			productReference = ED25CAC62EDDBF380023876A /* March16.app */;
 			productType = "com.apple.product-type.application";
+		};
+		ED5308332EE586480069B8F9 /* March16WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED5308482EE586480069B8F9 /* Build configuration list for PBXNativeTarget "March16WidgetExtension" */;
+			buildPhases = (
+				ED5308302EE586480069B8F9 /* Sources */,
+				ED5308312EE586480069B8F9 /* Frameworks */,
+				ED5308322EE586480069B8F9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				ED53083A2EE586480069B8F9 /* March16Widget */,
+			);
+			name = March16WidgetExtension;
+			packageProductDependencies = (
+				ED5308F62EE58AF70069B8F9 /* GRDB */,
+			);
+			productName = March16WidgetExtension;
+			productReference = ED5308342EE586480069B8F9 /* March16WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -120,6 +224,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					ED25CAC52EDDBF380023876A = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					ED5308332EE586480069B8F9 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -143,12 +250,20 @@
 			projectRoot = "";
 			targets = (
 				ED25CAC52EDDBF380023876A /* March16 */,
+				ED5308332EE586480069B8F9 /* March16WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		ED25CAC42EDDBF380023876A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED5308322EE586480069B8F9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -165,7 +280,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED5308302EE586480069B8F9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ED5308432EE586480069B8F9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED5308332EE586480069B8F9 /* March16WidgetExtension */;
+			targetProxy = ED5308422EE586480069B8F9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		ED25CAD52EDDBF3A0023876A /* Debug */ = {
@@ -173,6 +303,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "march16-icon";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = March16/March16.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZMW52M7L5;
@@ -220,6 +351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "march16-icon";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = March16/March16.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZMW52M7L5;
@@ -378,6 +510,73 @@
 			};
 			name = Release;
 		};
+		ED5308462EE586480069B8F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = March16WidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9ZMW52M7L5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = March16Widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = March16Widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.sijun.March16.March16Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ED5308472EE586480069B8F9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = March16WidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9ZMW52M7L5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = March16Widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = March16Widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.sijun.March16.March16Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -399,6 +598,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		ED5308482EE586480069B8F9 /* Build configuration list for PBXNativeTarget "March16WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED5308462EE586480069B8F9 /* Debug */,
+				ED5308472EE586480069B8F9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -413,6 +621,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ED5308F62EE58AF70069B8F9 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED7088292EE4721500F7FC6F /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
 		ED70882A2EE4721500F7FC6F /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ED7088292EE4721500F7FC6F /* XCRemoteSwiftPackageReference "GRDB.swift" */;

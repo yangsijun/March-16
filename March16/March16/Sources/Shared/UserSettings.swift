@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import WidgetKit
 
 @Observable
 final class UserSettings {
     static let shared = UserSettings()
 
     private let defaults = UserDefaults.standard
+    private let sharedDefaults = UserDefaults(suiteName: "group.dev.sijun.March16")
 
     private enum Keys {
         static let selectedVersion = "selectedBibleVersion"
@@ -24,6 +26,9 @@ final class UserSettings {
     var selectedVersion: BibleVersion? {
         didSet {
             defaults.set(selectedVersion?.rawValue, forKey: Keys.selectedVersion)
+            // Sync to shared UserDefaults for widget
+            sharedDefaults?.set(selectedVersion?.rawValue, forKey: Keys.selectedVersion)
+            WidgetCenter.shared.reloadTimelines(ofKind: "March16Widget")
         }
     }
 
