@@ -34,13 +34,18 @@ struct DailyVerse: Identifiable, Codable {
         }
     }
 
-    static let placeholder = DailyVerse(
-        id: 0,
-        month: 0,
-        day: 0,
-        book: "John",
-        chapter: 3,
-        startVerse: 16,
-        content: "For God so loved the world, that he gave his only born Son, that whoever believes in him should not perish, but have eternal life."
-    )
+    static var placeholder: DailyVerse {
+        let isKorean = BibleVersion.current == .nkrv
+        return DailyVerse(
+            id: 0,
+            month: 0,
+            day: 0,
+            book: isKorean ? "요한복음" : "John",
+            chapter: 3,
+            startVerse: 16,
+            content: isKorean
+                ? "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라"
+                : "For God so loved the world, that he gave his only born Son, that whoever believes in him should not perish, but have eternal life."
+        )
+    }
 }
