@@ -34,31 +34,37 @@ struct SettingsView: View {
                                 .tag(version)
                         }
                     }
+                    .listRowBackground(AppColor.groupedBackground)
                 } header: {
                     Text(String(localized: "Bible"))
                 }
 
                 Section {
                     Toggle(String(localized: "Daily Notification"), isOn: $isNotificationEnabled)
-
+                        .listRowBackground(AppColor.groupedBackground)
                     if isNotificationEnabled {
                         DatePicker(
                             String(localized: "Notification Time"),
                             selection: $notificationTime,
                             displayedComponents: .hourAndMinute
                         )
+                        .listRowBackground(AppColor.groupedBackground)
                     }
                 } header: {
                     Text(String(localized: "Notification"))
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(AppColor.background)
             .navigationTitle(String(localized: "Settings"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "Done")) {
+                    Button {
                         saveSettings()
                         dismiss()
+                    } label: {
+                        Image(systemName: "checkmark")
                     }
                 }
             }
