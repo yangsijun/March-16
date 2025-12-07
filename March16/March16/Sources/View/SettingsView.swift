@@ -61,6 +61,7 @@ struct SettingsView: View {
 
                 Section {
                     Toggle(String(localized: "Daily Notification"), isOn: $isNotificationEnabled)
+                        .tint(AppColor.accent)
                         .listRowBackground(AppColor.groupedBackground)
                     if isNotificationEnabled {
                         DatePicker(
