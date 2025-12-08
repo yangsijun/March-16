@@ -81,6 +81,9 @@ final class UserSettings {
     var appearanceMode: AppearanceMode {
         didSet {
             defaults.set(appearanceMode.rawValue, forKey: Keys.appearanceMode)
+            // Sync to shared UserDefaults for widget
+            sharedDefaults?.set(appearanceMode.rawValue, forKey: Keys.appearanceMode)
+            WidgetCenter.shared.reloadTimelines(ofKind: "March16Widget")
         }
     }
 
@@ -133,6 +136,7 @@ final class UserSettings {
 
     func syncToWidget() {
         sharedDefaults?.set(selectedVersion?.rawValue, forKey: Keys.selectedVersion)
+        sharedDefaults?.set(appearanceMode.rawValue, forKey: Keys.appearanceMode)
         WidgetCenter.shared.reloadTimelines(ofKind: "March16Widget")
     }
 }

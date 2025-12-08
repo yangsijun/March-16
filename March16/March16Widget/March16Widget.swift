@@ -52,8 +52,18 @@ struct March16Widget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyVerseProvider()) { entry in
-            March16WidgetEntryView(entry: entry)
-                .containerBackground(WidgetColor.background, for: .widget)
+            let appearanceMode = WidgetAppearanceMode.current
+            if appearanceMode.isSystemMode {
+                March16WidgetEntryView(entry: entry)
+                    .containerBackground(WidgetColor.background, for: .widget)
+            } else {
+                March16WidgetEntryView(entry: entry)
+                    .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
+                    .containerBackground(for: .widget) {
+                        Color("AppBackgroundColor")
+                            .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
+                    }
+            }
         }
         .configurationDisplayName("Today's Verse")
         .description("Daily Bible verse for spiritual reflection.")
@@ -233,6 +243,39 @@ struct LargeWidgetView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+// MARK: - Widget Appearance Mode
+
+private enum WidgetAppearanceMode: String {
+    case system
+    case light
+    case dark
+
+    var resolvedColorScheme: ColorScheme {
+        switch self {
+        case .system:
+            // Default to light for system (widget will follow system automatically for .system)
+            return .light
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+
+    var isSystemMode: Bool {
+        self == .system
+    }
+
+    static var current: WidgetAppearanceMode {
+        let defaults = UserDefaults(suiteName: "group.dev.sijun.March16")
+        if let modeString = defaults?.string(forKey: "appearanceMode"),
+           let mode = WidgetAppearanceMode(rawValue: modeString) {
+            return mode
+        }
+        return .system
     }
 }
 
