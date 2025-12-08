@@ -20,12 +20,18 @@ struct ContentView: View {
     @State private var isSettingsPresented: Bool = false
     @State private var calendarDate: Date = Date()
     @State private var selectedDate: Date? = Date()
+    @State private var displayedDate: Date = Date()
 
     var dailyVerse: DailyVerse {
         // Access appState and userSettings to trigger refresh when they change
         _ = appState.isKJVReady
         _ = userSettings.selectedVersion
-        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: Date()) ?? .placeholder
+        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: displayedDate) ?? .placeholder
+    }
+
+    private var canGoToNextDay: Bool {
+        let calendar = Calendar.current
+        return !calendar.isDateInToday(displayedDate)
     }
 
     var isBookmarked: Bool {
@@ -36,7 +42,7 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
-                    DateView(date: Date())
+                    DateView(date: displayedDate)
                     VerseView(dailyVerse: dailyVerse)
                         .contextMenu {
                             Button {
@@ -48,6 +54,24 @@ struct ContentView: View {
                     Spacer()
                 }
                 .background(AppColor.background)
+                .gesture(
+                    DragGesture(minimumDistance: 50)
+                        .onEnded { value in
+                            let horizontal = value.translation.width
+                            let vertical = value.translation.height
+
+                            // Only handle horizontal swipes
+                            guard abs(horizontal) > abs(vertical) else { return }
+
+                            if horizontal > 0 {
+                                // Swipe right -> previous day
+                                goToPreviousDay()
+                            } else {
+                                // Swipe left -> next day
+                                goToNextDay()
+                            }
+                        }
+                )
                 BottomBar(
                     isCalendarPresented: $isCalendarPresented,
                     isBookmarked: isBookmarked,
@@ -62,10 +86,15 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $isShareSheetPresented) {
-            ShareView(date: Date(), dailyVerse: dailyVerse)
+            ShareView(date: displayedDate, dailyVerse: dailyVerse)
         }
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView()
+        }
+        .onChange(of: selectedDate) { _, newDate in
+            if let date = newDate {
+                displayedDate = date
+            }
         }
     }
 
@@ -75,6 +104,27 @@ struct ContentView: View {
         } else {
             let bookmark = Bookmark(dailyVerseId: dailyVerse.id)
             modelContext.insert(bookmark)
+        }
+    }
+
+    private func goToPreviousDay() {
+        if let newDate = Calendar.current.date(byAdding: .day, value: -1, to: displayedDate) {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                displayedDate = newDate
+                selectedDate = newDate
+                calendarDate = newDate
+            }
+        }
+    }
+
+    private func goToNextDay() {
+        guard canGoToNextDay else { return }
+        if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: displayedDate) {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                displayedDate = newDate
+                selectedDate = newDate
+                calendarDate = newDate
+            }
         }
     }
 }
