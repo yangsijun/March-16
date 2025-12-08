@@ -79,7 +79,9 @@ struct ContentView: View {
                     isSettingsPresented: $isSettingsPresented,
                     calendarDate: $calendarDate,
                     selectedDate: $selectedDate,
-                    onBookmarkTapped: toggleBookmark
+                    isToday: Calendar.current.isDateInToday(displayedDate),
+                    onBookmarkTapped: toggleBookmark,
+                    onTodayTapped: goToToday
                 )
                 CalendarView(isPresented: $isCalendarPresented, date: $calendarDate, selectedDate: $selectedDate)
                     .opacity(isCalendarPresented ? 1 : 0)
@@ -125,6 +127,16 @@ struct ContentView: View {
                 selectedDate = newDate
                 calendarDate = newDate
             }
+        }
+    }
+
+    private func goToToday() {
+        let today = Date()
+        guard !Calendar.current.isDateInToday(displayedDate) else { return }
+        withAnimation(.easeInOut(duration: 0.2)) {
+            displayedDate = today
+            selectedDate = today
+            calendarDate = today
         }
     }
 }

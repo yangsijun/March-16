@@ -14,7 +14,9 @@ struct BottomBar: View {
     @Binding var isSettingsPresented: Bool
     @Binding var calendarDate: Date
     @Binding var selectedDate: Date?
+    var isToday: Bool
     var onBookmarkTapped: () -> Void
+    var onTodayTapped: () -> Void
 
     var body: some View {
         VStack {
@@ -28,6 +30,16 @@ struct BottomBar: View {
                     }
                 } label: {
                     Label("Calendar", systemImage: "calendar")
+                }
+
+                if !isToday {
+                    BottomBarButton {
+                        withAnimation {
+                            onTodayTapped()
+                        }
+                    } label: {
+                        Label("Today", systemImage: "arrow.uturn.backward")
+                    }
                 }
 
                 Spacer()
@@ -101,7 +113,9 @@ struct BottomBarButton<Label: View>: View {
             isSettingsPresented: $isSettingsPresented,
             calendarDate: $calendarDate,
             selectedDate: $selectedDate,
-            onBookmarkTapped: { isBookmarked.toggle() }
+            isToday: false,
+            onBookmarkTapped: { isBookmarked.toggle() },
+            onTodayTapped: {}
         )
     }
 }
