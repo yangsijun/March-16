@@ -16,17 +16,20 @@ struct SettingsView: View {
     @State private var selectedVersion: BibleVersion
     @State private var isNotificationEnabled: Bool
     @State private var notificationTime: Date
+    @State private var appearanceMode: AppearanceMode
     @State private var showDiscardAlert: Bool = false
 
     // Initial values to detect changes
     private let initialVersion: BibleVersion
     private let initialNotificationEnabled: Bool
     private let initialNotificationTime: Date
+    private let initialAppearanceMode: AppearanceMode
 
     private var hasChanges: Bool {
         selectedVersion != initialVersion ||
         isNotificationEnabled != initialNotificationEnabled ||
-        notificationTime != initialNotificationTime
+        notificationTime != initialNotificationTime ||
+        appearanceMode != initialAppearanceMode
     }
 
     init() {
@@ -34,14 +37,17 @@ struct SettingsView: View {
         let version = settings.selectedVersion ?? BibleVersion.current
         let notificationEnabled = settings.isNotificationEnabled
         let notificationTime = settings.notificationTime
+        let appearance = settings.appearanceMode
 
         _selectedVersion = State(initialValue: version)
         _isNotificationEnabled = State(initialValue: notificationEnabled)
         _notificationTime = State(initialValue: notificationTime)
+        _appearanceMode = State(initialValue: appearance)
 
         self.initialVersion = version
         self.initialNotificationEnabled = notificationEnabled
         self.initialNotificationTime = notificationTime
+        self.initialAppearanceMode = appearance
     }
 
     var body: some View {
@@ -73,6 +79,18 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text(String(localized: "Notification"))
+                }
+
+                Section {
+                    Picker(String(localized: "Appearance"), selection: $appearanceMode) {
+                        ForEach(AppearanceMode.allCases, id: \.self) { mode in
+                            Text(mode.displayName)
+                                .tag(mode)
+                        }
+                    }
+                    .listRowBackground(AppColor.groupedBackground)
+                } header: {
+                    Text(String(localized: "Display"))
                 }
             }
             .scrollContentBackground(.hidden)
@@ -118,6 +136,7 @@ struct SettingsView: View {
         settings.selectedVersion = selectedVersion
         settings.isNotificationEnabled = isNotificationEnabled
         settings.notificationTime = notificationTime
+        settings.appearanceMode = appearanceMode
 
         // Reschedule notifications with new settings
         if isNotificationEnabled {

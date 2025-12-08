@@ -16,6 +16,8 @@ struct March16App: App {
 
     @AppStorage("lastScheduledLanguage") private var lastScheduledLanguage: String = ""
 
+    var userSettings = UserSettings.shared
+
     init() {
         requestNotificationPermission()
     }
@@ -23,6 +25,7 @@ struct March16App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(userSettings.appearanceMode.colorScheme)
                 .task {
                     guard !isInitialized else { return }
                     isInitialized = true

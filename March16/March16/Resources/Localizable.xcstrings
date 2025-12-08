@@ -11,6 +11,9 @@
         }
       }
     },
+    "Appearance" : {
+
+    },
     "Bible" : {
       "localizations" : {
         "ko" : {
@@ -67,6 +70,9 @@
         }
       }
     },
+    "Dark" : {
+
+    },
     "Discard" : {
       "localizations" : {
         "ko" : {
@@ -97,6 +103,9 @@
         }
       }
     },
+    "Display" : {
+
+    },
     "Done" : {
       "localizations" : {
         "ko" : {
@@ -106,6 +115,9 @@
           }
         }
       }
+    },
+    "Light" : {
+
     },
     "Next" : {
       "localizations" : {
@@ -176,6 +188,9 @@
           }
         }
       }
+    },
+    "System" : {
+
     },
     "Today" : {
 
