@@ -12,7 +12,14 @@
       }
     },
     "Appearance" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 모드"
+          }
+        }
+      }
     },
     "Bible" : {
       "localizations" : {
@@ -35,10 +42,24 @@
       }
     },
     "Bookmark" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "북마크"
+          }
+        }
+      }
     },
     "Calendar" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캘린더"
+          }
+        }
+      }
     },
     "Cancel" : {
       "localizations" : {
@@ -71,7 +92,14 @@
       }
     },
     "Dark" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다크"
+          }
+        }
+      }
     },
     "Discard" : {
       "localizations" : {
@@ -104,7 +132,14 @@
       }
     },
     "Display" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면"
+          }
+        }
+      }
     },
     "Done" : {
       "localizations" : {
@@ -117,7 +152,14 @@
       }
     },
     "Light" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라이트"
+          }
+        }
+      }
     },
     "Next" : {
       "localizations" : {
@@ -190,10 +232,24 @@
       }
     },
     "System" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템"
+          }
+        }
+      }
     },
     "Today" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘"
+          }
+        }
+      }
     },
     "Today's Verse" : {
       "localizations" : {
