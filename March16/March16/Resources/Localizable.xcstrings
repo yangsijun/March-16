@@ -166,7 +166,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이전달"
+            "value" : "다음달"
           }
         }
       }
@@ -196,7 +196,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다음달"
+            "value" : "이전달"
           }
         }
       }
