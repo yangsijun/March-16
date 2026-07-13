@@ -13,6 +13,7 @@ struct CalendarView: View {
     @Query private var bookmarks: [Bookmark]
 
     var userSettings = UserSettings.shared
+    var verseStore = VerseStore.shared
 
     @Binding var isPresented: Bool
     @Binding var date: Date
@@ -21,10 +22,12 @@ struct CalendarView: View {
     @State private var isShareSheetPresented: Bool = false
 
     private var selectedDailyVerse: DailyVerse {
-        // Access userSettings to trigger refresh when version changes
+        // Access userSettings to trigger refresh when version changes.
+        // VerseStore loads from CloudKit on a cache miss and refreshes the view
+        // when the fetch completes.
         _ = userSettings.selectedVersion
         guard let selectedDate else { return .placeholder }
-        return CloudKitVerseRepository.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder
+        return verseStore.verse(for: selectedDate)
     }
 
     private var isBookmarked: Bool {

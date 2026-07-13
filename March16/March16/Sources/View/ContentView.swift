@@ -13,6 +13,7 @@ struct ContentView: View {
     @Query private var bookmarks: [Bookmark]
 
     var userSettings = UserSettings.shared
+    var verseStore = VerseStore.shared
 
     @State private var isCalendarPresented: Bool = false
     @State private var isShareSheetPresented: Bool = false
@@ -22,9 +23,11 @@ struct ContentView: View {
     @State private var displayedDate: Date = Date()
 
     var dailyVerse: DailyVerse {
-        // Access userSettings to trigger refresh when version changes
+        // Access userSettings to trigger refresh when version changes.
+        // VerseStore loads from CloudKit on a cache miss and refreshes the view
+        // when the fetch completes.
         _ = userSettings.selectedVersion
-        return CloudKitVerseRepository.shared.fetchDailyVerse(date: displayedDate) ?? .placeholder
+        return verseStore.verse(for: displayedDate)
     }
 
     private var canGoToNextDay: Bool {
