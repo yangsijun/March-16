@@ -462,7 +462,6 @@ extension View {
 
 // MARK: - Preview Samples
 
-#if DEBUG
 extension WidgetDailyVerse {
     /// Convenience factory for preview fixtures.
     static func sample(_ book: String, _ chapter: Int, _ start: Int, _ content: String, end: Int? = nil) -> WidgetDailyVerse {
@@ -495,7 +494,6 @@ extension WidgetDailyVerse {
         ]
     }
 }
-#endif
 
 // MARK: - Preview
 
