@@ -78,6 +78,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Resources/KoPub Batang_Pro Medium.otf",
+				Sources/Shared/OpenTodayVerseIntent.swift,
 			);
 			target = ED5308332EE586480069B8F9 /* March16WidgetExtension */;
 		};
