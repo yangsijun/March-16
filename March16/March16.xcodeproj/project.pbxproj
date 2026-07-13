@@ -53,7 +53,6 @@
 		ED5308342EE586480069B8F9 /* March16WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = March16WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5308362EE586480069B8F9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		ED5308382EE586480069B8F9 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		ED53084C2EE588370069B8F9 /* March16WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = March16WidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -129,7 +128,6 @@
 		ED25CABD2EDDBF380023876A = {
 			isa = PBXGroup;
 			children = (
-				ED53084C2EE588370069B8F9 /* March16WidgetExtension.entitlements */,
 				ED25CAC82EDDBF380023876A /* March16 */,
 				ED53083A2EE586480069B8F9 /* March16Widget */,
 				ED5308352EE586480069B8F9 /* Frameworks */,
@@ -525,7 +523,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = March16WidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = March16Widget/March16WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZMW52M7L5;
@@ -558,7 +556,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = March16WidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = March16Widget/March16WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZMW52M7L5;
