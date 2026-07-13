@@ -192,7 +192,14 @@
       }
     },
     "Open Today's Verse" : {
-
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘의 말씀 열기"
+          }
+        }
+      }
     },
     "Prev" : {
       "localizations" : {
