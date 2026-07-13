@@ -12,5 +12,8 @@ import SwiftUI
 struct March16WidgetBundle: WidgetBundle {
     var body: some Widget {
         March16Widget()
+        if #available(iOS 18.0, *) {
+            March16Control()
+        }
     }
 }
