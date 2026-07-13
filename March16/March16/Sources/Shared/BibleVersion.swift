@@ -32,12 +32,9 @@ enum BibleVersion: String, CaseIterable {
         case "ko":
             return .nkrv
         default:
-            // For non-Korean: UK uses WEBBE, others use KJV
-            if RegionManager.shared.isUK {
-                return .webbe
-            } else {
-                return .kjv
-            }
+            // Non-Korean defaults to WEBBE. KJV is intentionally excluded: it is
+            // not seeded into CloudKit and is not offered in the settings picker.
+            return .webbe
         }
     }
 }
