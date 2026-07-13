@@ -141,7 +141,11 @@ final class CloudKitManager {
 
     // MARK: - Data Upload (for migration)
 
-    /// Uploads a DailyVerse record to CloudKit
+    /// Uploads a DailyVerse record to CloudKit.
+    ///
+    /// Uses a deterministic record name (`daily_<month>_<day>`) with overwrite
+    /// semantics, so re-running the migration updates the existing record in
+    /// place instead of creating duplicates.
     func uploadDailyVerse(
         month: Int,
         day: Int,
@@ -150,7 +154,8 @@ final class CloudKitManager {
         startVerse: Int,
         endVerse: Int?
     ) async throws -> CKRecord {
-        let record = CKRecord(recordType: CloudKitSchema.RecordType.dailyVerse)
+        let recordID = CKRecord.ID(recordName: "daily_\(month)_\(day)")
+        let record = CKRecord(recordType: CloudKitSchema.RecordType.dailyVerse, recordID: recordID)
         record[CloudKitSchema.DailyVerseField.month] = month
         record[CloudKitSchema.DailyVerseField.day] = day
         record[CloudKitSchema.DailyVerseField.bookKey] = bookKey
@@ -158,17 +163,22 @@ final class CloudKitManager {
         record[CloudKitSchema.DailyVerseField.startVerse] = startVerse
         record[CloudKitSchema.DailyVerseField.endVerse] = endVerse
 
-        return try await publicDatabase.save(record)
+        return try await upsert(record)
     }
 
-    /// Uploads a VerseText record to CloudKit
+    /// Uploads a VerseText record to CloudKit.
+    ///
+    /// The record name is derived from the parent daily verse and version
+    /// (`verse_<dailyRecordName>_<versionCode>`) so repeated migrations overwrite
+    /// rather than duplicate.
     func uploadVerseText(
         dailyVerseRecord: CKRecord,
         versionCode: String,
         bookName: String,
         content: String
     ) async throws -> CKRecord {
-        let record = CKRecord(recordType: CloudKitSchema.RecordType.verseText)
+        let recordID = CKRecord.ID(recordName: "verse_\(dailyVerseRecord.recordID.recordName)_\(versionCode)")
+        let record = CKRecord(recordType: CloudKitSchema.RecordType.verseText, recordID: recordID)
         record[CloudKitSchema.VerseTextField.dailyVerseRef] = CKRecord.Reference(
             record: dailyVerseRecord,
             action: .deleteSelf
@@ -177,7 +187,25 @@ final class CloudKitManager {
         record[CloudKitSchema.VerseTextField.bookName] = bookName
         record[CloudKitSchema.VerseTextField.content] = content
 
-        return try await publicDatabase.save(record)
+        return try await upsert(record)
+    }
+
+    /// Saves a record with `.allKeys` overwrite policy so migrations are idempotent.
+    ///
+    /// Because the record carries a deterministic ID and no server change tag,
+    /// `.allKeys` replaces any existing record's fields instead of failing with a
+    /// conflict.
+    private func upsert(_ record: CKRecord) async throws -> CKRecord {
+        let result = try await publicDatabase.modifyRecords(
+            saving: [record],
+            deleting: [],
+            savePolicy: .allKeys,
+            atomically: true
+        )
+        guard let saveResult = result.saveResults[record.recordID] else {
+            return record
+        }
+        return try saveResult.get()
     }
 
     // MARK: - Check CloudKit Availability

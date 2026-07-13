@@ -11,13 +11,16 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     var settings = UserSettings.shared
-    var appState = AppState.shared
 
     @State private var selectedVersion: BibleVersion
     @State private var isNotificationEnabled: Bool
     @State private var notificationTime: Date
     @State private var appearanceMode: AppearanceMode
     @State private var showDiscardAlert: Bool = false
+
+    #if DEBUG
+    @State private var showMigration: Bool = false
+    #endif
 
     // Initial values to detect changes
     private let initialVersion: BibleVersion
@@ -92,6 +95,19 @@ struct SettingsView: View {
                 } header: {
                     Text(String(localized: "Display"))
                 }
+
+                #if DEBUG
+                Section {
+                    Button {
+                        showMigration = true
+                    } label: {
+                        Text(verbatim: "CloudKit Migration")
+                    }
+                    .listRowBackground(AppColor.groupedBackground)
+                } header: {
+                    Text(verbatim: "Developer")
+                }
+                #endif
             }
             .scrollContentBackground(.hidden)
             .contentMargins(.top, 80, for: .scrollContent)
@@ -120,16 +136,15 @@ struct SettingsView: View {
         } message: {
             Text(String(localized: "Your changes will not be saved."))
         }
+        #if DEBUG
+        .sheet(isPresented: $showMigration) {
+            CloudKitMigrationView()
+        }
+        #endif
     }
 
     private var availableVersions: [BibleVersion] {
-        // Show all versions, but KJV only if available
-        // Access appState.isKJVReady to trigger re-render when KJV becomes available
-        if appState.isKJVReady || DatabaseManager.shared.isKJVAttached {
-            return [.nkrv, .kjv, .webbe]
-        } else {
-            return [.nkrv, .webbe]
-        }
+        [.nkrv, .webbe]
     }
 
     private func saveSettings() {
