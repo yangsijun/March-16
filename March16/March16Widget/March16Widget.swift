@@ -333,10 +333,10 @@ struct AccessoryRectangularView: View {
             Text(entry.verse.content)
                 .font(.system(size: contentFontSize, weight: .regular, design: .serif))
                 .minimumScaleFactor(0.6)
-                .lineLimit(3)
+                .lineLimit(5)
 
             Text(entry.verse.referenceString)
-                .font(.system(size: max(contentFontSize - 3, 9), weight: .semibold))
+                .font(.system(size: contentFontSize, weight: .semibold, design: .serif))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
         }
@@ -460,6 +460,43 @@ extension View {
     }
 }
 
+// MARK: - Preview Samples
+
+#if DEBUG
+extension WidgetDailyVerse {
+    /// Convenience factory for preview fixtures.
+    static func sample(_ book: String, _ chapter: Int, _ start: Int, _ content: String, end: Int? = nil) -> WidgetDailyVerse {
+        WidgetDailyVerse(
+            id: 0, month: 1, day: 1,
+            book: book, chapter: chapter, startVerse: start, endVerse: end,
+            content: content
+        )
+    }
+
+    /// Verses spanning a wide range of content lengths, ordered short → long.
+    /// Used to exercise AccessoryRectangular (and medium/large) font scaling and
+    /// line wrapping across the `contentFontSize` thresholds (30/55/85/120 chars).
+    static var lengthSamples: [WidgetDailyVerse] {
+        [
+            // ~11 chars — size 15
+            .sample("요한복음", 11, 35, "예수께서 눈물을 흘리시더라"),
+            // ~26 chars — size 15/13 boundary
+            .sample("빌립보서", 4, 13, "내게 능력 주시는 자 안에서 모든 것을 할 수 있느니라"),
+            // ~40 chars — size 13
+            .sample("데살로니가전서", 5, 16, "항상 기뻐하라 쉬지 말고 기도하라 범사에 감사하라 이것이 너희를 향하신 뜻이니라", end: 18),
+            // ~65 chars — size 11
+            .sample("요한복음", 3, 16, "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라"),
+            // ~95 chars — size 10
+            .sample("시편", 23, 1, "여호와는 나의 목자시니 내게 부족함이 없으리로다 그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다 내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다", end: 3),
+            // ~140 chars — size 9 + minimumScaleFactor
+            .sample("로마서", 8, 28, "우리가 알거니와 하나님을 사랑하는 자 곧 그의 뜻대로 부르심을 입은 자들에게는 모든 것이 합력하여 선을 이루느니라 하나님이 미리 아신 자들을 또한 그 아들의 형상을 본받게 하기 위하여 미리 정하셨으니 이는 그로 많은 형제 중에서 맏아들이 되게 하려 하심이니라"),
+            // English long — verifies serif Latin wrapping
+            .sample("John", 3, 16, "For God so loved the world, that he gave his only born Son, that whoever believes in him should not perish, but have eternal life."),
+        ]
+    }
+}
+#endif
+
 // MARK: - Preview
 
 #Preview(as: .systemSmall) {
@@ -468,16 +505,20 @@ extension View {
     DailyVerseEntry(date: Date(), verse: .placeholder)
 }
 
-#Preview(as: .systemMedium) {
+#Preview("Medium · lengths", as: .systemMedium) {
     March16Widget()
 } timeline: {
-    DailyVerseEntry(date: Date(), verse: .placeholder)
+    for sample in WidgetDailyVerse.lengthSamples {
+        DailyVerseEntry(date: Date(), verse: sample)
+    }
 }
 
-#Preview(as: .systemLarge) {
+#Preview("Large · lengths", as: .systemLarge) {
     March16Widget()
 } timeline: {
-    DailyVerseEntry(date: Date(), verse: .placeholder)
+    for sample in WidgetDailyVerse.lengthSamples {
+        DailyVerseEntry(date: Date(), verse: sample)
+    }
 }
 
 #Preview(as: .accessoryInline) {
@@ -492,8 +533,12 @@ extension View {
     DailyVerseEntry(date: Date(), verse: .placeholder)
 }
 
-#Preview(as: .accessoryRectangular) {
+// Scrub through the timeline in the preview canvas to see how the verse font
+// scales and wraps for each content length.
+#Preview("Rectangular · lengths", as: .accessoryRectangular) {
     March16Widget()
 } timeline: {
-    DailyVerseEntry(date: Date(), verse: .placeholder)
+    for sample in WidgetDailyVerse.lengthSamples {
+        DailyVerseEntry(date: Date(), verse: sample)
+    }
 }
