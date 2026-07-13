@@ -52,22 +52,14 @@ struct March16Widget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyVerseProvider()) { entry in
-            let appearanceMode = WidgetAppearanceMode.current
-            if appearanceMode.isSystemMode {
-                March16WidgetEntryView(entry: entry)
-                    .containerBackground(WidgetColor.background, for: .widget)
-            } else {
-                March16WidgetEntryView(entry: entry)
-                    .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
-                    .containerBackground(for: .widget) {
-                        Color("AppBackgroundColor")
-                            .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
-                    }
-            }
+            March16WidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Today's Verse")
         .description("Daily Bible verse for spiritual reflection.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([
+            .systemSmall, .systemMedium, .systemLarge,
+            .accessoryCircular, .accessoryRectangular, .accessoryInline
+        ])
     }
 }
 
@@ -80,13 +72,41 @@ struct March16WidgetEntryView: View {
     var body: some View {
         switch family {
         case .systemSmall:
-            SmallWidgetView(entry: entry)
+            homeWidget(SmallWidgetView(entry: entry))
         case .systemMedium:
-            MediumWidgetView(entry: entry)
+            homeWidget(MediumWidgetView(entry: entry))
         case .systemLarge:
-            LargeWidgetView(entry: entry)
+            homeWidget(LargeWidgetView(entry: entry))
+        case .accessoryCircular:
+            AccessoryCircularView(entry: entry)
+                .containerBackground(.clear, for: .widget)
+        case .accessoryRectangular:
+            AccessoryRectangularView(entry: entry)
+                .containerBackground(.clear, for: .widget)
+        case .accessoryInline:
+            AccessoryInlineView(entry: entry)
+                .containerBackground(.clear, for: .widget)
         default:
-            SmallWidgetView(entry: entry)
+            homeWidget(SmallWidgetView(entry: entry))
+        }
+    }
+
+    // Home screen widgets honor the app's appearance mode and custom background color.
+    // Lock screen (accessory) widgets are rendered by the system in vibrant monochrome,
+    // so they intentionally bypass this styling.
+    @ViewBuilder
+    private func homeWidget<Content: View>(_ content: Content) -> some View {
+        let appearanceMode = WidgetAppearanceMode.current
+        if appearanceMode.isSystemMode {
+            content
+                .containerBackground(WidgetColor.background, for: .widget)
+        } else {
+            content
+                .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
+                .containerBackground(for: .widget) {
+                    Color("AppBackgroundColor")
+                        .environment(\.colorScheme, appearanceMode.resolvedColorScheme)
+                }
         }
     }
 }
@@ -246,6 +266,84 @@ struct LargeWidgetView: View {
     }
 }
 
+// MARK: - Accessory Inline (Lock Screen — above the clock)
+
+struct AccessoryInlineView: View {
+    var entry: DailyVerseEntry
+
+    var body: some View {
+        // Inline widgets allow a single SF Symbol plus one line of text.
+        Label(entry.verse.referenceString, systemImage: "book.closed")
+    }
+}
+
+// MARK: - Accessory Circular (Lock Screen — circular slot)
+
+struct AccessoryCircularView: View {
+    var entry: DailyVerseEntry
+
+    private var monthString: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
+        formatter.dateFormat = "MMM"
+        return formatter.string(from: entry.date).uppercased()
+    }
+
+    private var dayString: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en")
+        formatter.dateFormat = "d"
+        return formatter.string(from: entry.date)
+    }
+
+    var body: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            VStack(spacing: -1) {
+                Text(monthString)
+                    .font(.system(size: 11, weight: .semibold, design: .serif))
+                Text(dayString)
+                    .font(.system(size: 26, weight: .black, design: .serif))
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+            }
+        }
+    }
+}
+
+// MARK: - Accessory Rectangular (Lock Screen — wide slot)
+
+struct AccessoryRectangularView: View {
+    var entry: DailyVerseEntry
+
+    // Scale the verse font to the content length so short verses read large
+    // and long verses still fit. `minimumScaleFactor` is the final safety net.
+    private var contentFontSize: CGFloat {
+        switch entry.verse.content.count {
+        case 0..<30: return 15
+        case 30..<55: return 13
+        case 55..<85: return 11
+        case 85..<120: return 10
+        default: return 9
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(entry.verse.content)
+                .font(.system(size: contentFontSize, weight: .regular, design: .serif))
+                .minimumScaleFactor(0.6)
+                .lineLimit(3)
+
+            Text(entry.verse.referenceString)
+                .font(.system(size: max(contentFontSize - 3, 9), weight: .semibold))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+}
+
 // MARK: - Widget Appearance Mode
 
 private enum WidgetAppearanceMode: String {
@@ -377,6 +475,24 @@ extension View {
 }
 
 #Preview(as: .systemLarge) {
+    March16Widget()
+} timeline: {
+    DailyVerseEntry(date: Date(), verse: .placeholder)
+}
+
+#Preview(as: .accessoryInline) {
+    March16Widget()
+} timeline: {
+    DailyVerseEntry(date: Date(), verse: .placeholder)
+}
+
+#Preview(as: .accessoryCircular) {
+    March16Widget()
+} timeline: {
+    DailyVerseEntry(date: Date(), verse: .placeholder)
+}
+
+#Preview(as: .accessoryRectangular) {
     March16Widget()
 } timeline: {
     DailyVerseEntry(date: Date(), verse: .placeholder)
