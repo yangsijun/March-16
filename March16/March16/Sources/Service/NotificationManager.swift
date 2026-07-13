@@ -68,10 +68,10 @@ final class NotificationManager {
 
         center.removePendingNotificationRequests(withIdentifiers: getDailyVerseIdentifiers())
         for request in requests {
-            center.add(request) { error in
-                if let error = error {
-                    print("Failed to schedule notification: \(error.localizedDescription)")
-                }
+            do {
+                try await center.add(request)
+            } catch {
+                print("Failed to schedule notification: \(error.localizedDescription)")
             }
         }
     }
