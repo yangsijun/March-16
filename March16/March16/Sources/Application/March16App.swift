@@ -35,7 +35,7 @@ struct March16App: App {
         .modelContainer(for: Bookmark.self)
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                rescheduleNotificationsIfLanguageChanged()
+                Task { await rescheduleNotificationsIfLanguageChanged() }
             }
         }
     }
@@ -45,7 +45,7 @@ struct March16App: App {
         await prefetchVersesFromCloudKit()
 
         // Schedule notifications
-        scheduleNotificationsIfAuthorized()
+        await scheduleNotificationsIfAuthorized()
     }
 
     private func prefetchVersesFromCloudKit() async {
@@ -71,22 +71,18 @@ struct March16App: App {
         NotificationManager.shared.requestAuthorization()
     }
 
-    private func scheduleNotificationsIfAuthorized() {
+    private func scheduleNotificationsIfAuthorized() async {
         let language = currentLanguageCode
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            if settings.authorizationStatus == .authorized {
-                NotificationManager.shared.scheduleDailyNotification()
-                DispatchQueue.main.async {
-                    self.lastScheduledLanguage = language
-                }
-            }
-        }
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        guard settings.authorizationStatus == .authorized else { return }
+        await NotificationManager.shared.scheduleDailyNotification()
+        lastScheduledLanguage = language
     }
 
-    private func rescheduleNotificationsIfLanguageChanged() {
+    private func rescheduleNotificationsIfLanguageChanged() async {
         let currentLanguage = currentLanguageCode
         guard lastScheduledLanguage != currentLanguage else { return }
-        scheduleNotificationsIfAuthorized()
+        await scheduleNotificationsIfAuthorized()
     }
 
     private var currentLanguageCode: String {

@@ -153,9 +153,12 @@ struct SettingsView: View {
         settings.notificationTime = notificationTime
         settings.appearanceMode = appearanceMode
 
-        // Reschedule notifications with new settings
+        // Reschedule notifications with new settings.
+        // scheduleDailyNotification() prefetches the (possibly newly selected)
+        // version's verses before scheduling, so a version change no longer wipes
+        // notifications when the new version isn't cached yet.
         if isNotificationEnabled {
-            NotificationManager.shared.scheduleDailyNotification()
+            Task { await NotificationManager.shared.scheduleDailyNotification() }
         } else {
             NotificationManager.shared.cancelAllNotifications()
         }

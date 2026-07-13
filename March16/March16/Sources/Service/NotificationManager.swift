@@ -30,20 +30,24 @@ final class NotificationManager {
         }
     }
 
-    func scheduleDailyNotification() {
+    /// Schedules daily verse notifications for the next 7 days.
+    ///
+    /// Verse text now comes from CloudKit via a local cache, so before building
+    /// notification content this first prefetches any missing verses. If a verse
+    /// still can't be resolved (offline + cold cache), a generic fallback body is
+    /// used instead of silently skipping that day. Existing notifications are only
+    /// removed once the replacement requests are ready, so a fetch failure can
+    /// never leave the user with zero scheduled notifications.
+    func scheduleDailyNotification() async {
         let center = UNUserNotificationCenter.current()
-
-        // Remove all existing daily verse notifications
-        center.removePendingNotificationRequests(withIdentifiers: getDailyVerseIdentifiers())
-
-        // Schedule notifications for the next 7 days
         let calendar = Calendar.current
         let now = Date()
 
+        // Collect target dates for the next 7 days (skip today if already past time).
+        var targetDates: [Date] = []
         for dayOffset in 0..<7 {
             guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: now) else { continue }
 
-            // Skip if it's today and already past notification time
             if dayOffset == 0 {
                 let currentHour = calendar.component(.hour, from: now)
                 let currentMinute = calendar.component(.minute, from: now)
@@ -52,18 +56,36 @@ final class NotificationManager {
                 }
             }
 
-            scheduleNotification(for: targetDate)
+            targetDates.append(targetDate)
+        }
+
+        // Ensure verse text is available in the cache before building content.
+        let versionCode = BibleVersion.current.code
+        await CloudKitVerseRepository.shared.prefetchVerses(for: targetDates, versionCode: versionCode)
+
+        // Build all replacement requests first, then swap them in atomically.
+        let requests = targetDates.map { buildRequest(for: $0, versionCode: versionCode) }
+
+        center.removePendingNotificationRequests(withIdentifiers: getDailyVerseIdentifiers())
+        for request in requests {
+            center.add(request) { error in
+                if let error = error {
+                    print("Failed to schedule notification: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
-    private func scheduleNotification(for date: Date) {
-        guard let dailyVerse = CloudKitVerseRepository.shared.fetchDailyVerse(date: date) else {
-            return
-        }
-
+    private func buildRequest(for date: Date, versionCode: String) -> UNNotificationRequest {
         let content = UNMutableNotificationContent()
         content.title = "\(String(localized: "Today's Verse")) - \(date.formatted(Date.FormatStyle().month().day()))"
-        content.body = "[\(dailyVerse.referenceString)] \(dailyVerse.content)"
+
+        if let dailyVerse = CloudKitVerseRepository.shared.fetchDailyVerse(date: date, versionCode: versionCode) {
+            content.body = "[\(dailyVerse.referenceString)] \(dailyVerse.content)"
+        } else {
+            // Fallback when the verse could not be fetched (e.g. offline, cold cache).
+            content.body = String(localized: "Open the app to see today's verse.")
+        }
         content.sound = .default
 
         let calendar = Calendar.current
@@ -73,19 +95,16 @@ final class NotificationManager {
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
-        let identifier = "dailyVerse_\(calendar.component(.year, from: date))_\(calendar.component(.month, from: date))_\(calendar.component(.day, from: date))"
-
-        let request = UNNotificationRequest(
-            identifier: identifier,
+        return UNNotificationRequest(
+            identifier: dailyIdentifier(for: date),
             content: content,
             trigger: trigger
         )
+    }
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Failed to schedule notification: \(error.localizedDescription)")
-            }
-        }
+    private func dailyIdentifier(for date: Date) -> String {
+        let calendar = Calendar.current
+        return "dailyVerse_\(calendar.component(.year, from: date))_\(calendar.component(.month, from: date))_\(calendar.component(.day, from: date))"
     }
 
     func cancelAllNotifications() {
@@ -100,8 +119,7 @@ final class NotificationManager {
 
         for dayOffset in -1..<14 {
             guard let date = calendar.date(byAdding: .day, value: dayOffset, to: now) else { continue }
-            let identifier = "dailyVerse_\(calendar.component(.year, from: date))_\(calendar.component(.month, from: date))_\(calendar.component(.day, from: date))"
-            identifiers.append(identifier)
+            identifiers.append(dailyIdentifier(for: date))
         }
 
         return identifiers

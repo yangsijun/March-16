@@ -201,6 +201,16 @@
         }
       }
     },
+    "Open the app to see today's verse." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱을 열어 오늘의 말씀을 확인하세요."
+          }
+        }
+      }
+    },
     "Prev" : {
       "localizations" : {
         "ko" : {
