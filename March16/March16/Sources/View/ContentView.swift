@@ -12,7 +12,6 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
 
-    var appState = AppState.shared
     var userSettings = UserSettings.shared
 
     @State private var isCalendarPresented: Bool = false
@@ -23,10 +22,9 @@ struct ContentView: View {
     @State private var displayedDate: Date = Date()
 
     var dailyVerse: DailyVerse {
-        // Access appState and userSettings to trigger refresh when they change
-        _ = appState.isKJVReady
+        // Access userSettings to trigger refresh when version changes
         _ = userSettings.selectedVersion
-        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: displayedDate) ?? .placeholder
+        return CloudKitVerseRepository.shared.fetchDailyVerse(date: displayedDate) ?? .placeholder
     }
 
     private var canGoToNextDay: Bool {

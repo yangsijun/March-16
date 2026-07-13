@@ -16,18 +16,9 @@ enum BibleVersion: String, CaseIterable {
         rawValue
     }
 
-    /// Returns true if this version requires KJV database (ODR)
-    var requiresKJVDatabase: Bool {
-        self == .kjv
-    }
-
     static var current: BibleVersion {
         // User preference takes priority
         if let userSelected = UserSettings.shared.selectedVersion {
-            // If user selected KJV but it's not available, fall back to WEBBE
-            if userSelected == .kjv && !DatabaseManager.shared.isKJVAttached {
-                return .webbe
-            }
             return userSelected
         }
 
@@ -41,12 +32,11 @@ enum BibleVersion: String, CaseIterable {
         case "ko":
             return .nkrv
         default:
-            // For non-Korean: UK uses WEBBE, others use KJV (if available)
+            // For non-Korean: UK uses WEBBE, others use KJV
             if RegionManager.shared.isUK {
                 return .webbe
             } else {
-                // Fall back to WEBBE if KJV database is not yet available
-                return DatabaseManager.shared.isKJVAttached ? .kjv : .webbe
+                return .kjv
             }
         }
     }

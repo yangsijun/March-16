@@ -84,7 +84,7 @@ struct DayCell: View {
     var bookmarkedDailyVerseIds: Set<Int> = []
     var isBookmarked: Bool {
         guard let date else { return false }
-        guard let dailyVerse = DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: date) else { return false }
+        guard let dailyVerse = CloudKitVerseRepository.shared.fetchDailyVerse(date: date) else { return false }
         return bookmarkedDailyVerseIds.contains(dailyVerse.id)
     }
     var isFuture: Bool {

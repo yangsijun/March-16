@@ -24,7 +24,7 @@ struct CalendarView: View {
         // Access userSettings to trigger refresh when version changes
         _ = userSettings.selectedVersion
         guard let selectedDate else { return .placeholder }
-        return DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder
+        return CloudKitVerseRepository.shared.fetchDailyVerse(date: selectedDate) ?? .placeholder
     }
 
     private var isBookmarked: Bool {

@@ -41,34 +41,30 @@ struct March16App: App {
     }
 
     private func initializeApp() async {
-        // Setup shared database for widget access
-        SharedDatabaseManager.shared.setupSharedDatabase()
+        // Prefetch today's verse and upcoming week from CloudKit
+        await prefetchVersesFromCloudKit()
 
-        // Fetch storefront region info
-        await RegionManager.shared.fetchStorefront()
-        print("[March16] Storefront country: \(RegionManager.shared.storefrontCountryCode ?? "nil"), isUK: \(RegionManager.shared.isUK)")
+        // Schedule notifications
+        scheduleNotificationsIfAuthorized()
+    }
 
-        // Request KJV database if needed (non-UK region)
-        if !RegionManager.shared.isUK {
-            print("[March16] Requesting KJV database...")
-            ODRManager.shared.requestKJVDatabase { success in
-                print("[March16] KJV database request result: \(success)")
-                if success {
-                    DatabaseManager.shared.attachKJVDatabase()
-                    print("[March16] KJV database attached: \(DatabaseManager.shared.isKJVAttached)")
-                    AppState.shared.markKJVReady()
-                    print("[March16] AppState.isKJVReady: \(AppState.shared.isKJVReady)")
-                } else {
-                    print("[March16] KJV database request failed")
-                }
-                // Schedule notifications after KJV is ready
-                self.scheduleNotificationsIfAuthorized()
+    private func prefetchVersesFromCloudKit() async {
+        let repository = CloudKitVerseRepository.shared
+        let versionCode = BibleVersion.current.code
+
+        // Prefetch today's verse first (highest priority)
+        _ = try? await repository.fetchDailyVerseAsync(date: Date(), versionCode: versionCode)
+
+        // Prefetch next 7 days for notifications and widget
+        var dates: [Date] = []
+        for i in 1...7 {
+            if let date = Calendar.current.date(byAdding: .day, value: i, to: Date()) {
+                dates.append(date)
             }
-        } else {
-            print("[March16] UK region - skipping KJV")
-            // UK region - schedule notifications with WEBBE
-            scheduleNotificationsIfAuthorized()
         }
+        await repository.prefetchVerses(for: dates, versionCode: versionCode)
+
+        print("[March16] CloudKit prefetch completed")
     }
 
     private func requestNotificationPermission() {

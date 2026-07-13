@@ -136,3 +136,6 @@ iOSInjectionProject/
 
 *.sqlite
 *.otf
+
+# oh-my-claudecode state
+.omc/

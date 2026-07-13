@@ -71,6 +71,9 @@
         }
       }
     },
+    "CloudKit Migration" : {
+
+    },
     "Copy" : {
       "localizations" : {
         "ko" : {
@@ -151,6 +154,9 @@
         }
       }
     },
+    "Error: %@" : {
+
+    },
     "Light" : {
       "localizations" : {
         "ko" : {
@@ -160,6 +166,9 @@
           }
         }
       }
+    },
+    "Migrating..." : {
+
     },
     "Next" : {
       "localizations" : {
@@ -230,6 +239,9 @@
           }
         }
       }
+    },
+    "Start Migration" : {
+
     },
     "System" : {
       "localizations" : {

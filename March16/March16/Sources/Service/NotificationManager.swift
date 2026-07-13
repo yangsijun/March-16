@@ -57,7 +57,7 @@ final class NotificationManager {
     }
 
     private func scheduleNotification(for date: Date) {
-        guard let dailyVerse = DailyVerseRepositoryImpl.shared.fetchDailyVerse(date: date) else {
+        guard let dailyVerse = CloudKitVerseRepository.shared.fetchDailyVerse(date: date) else {
             return
         }
 
