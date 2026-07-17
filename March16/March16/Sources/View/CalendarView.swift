@@ -31,7 +31,9 @@ struct CalendarView: View {
     }
 
     private var isBookmarked: Bool {
-        bookmarks.contains { $0.dailyVerseId == selectedDailyVerse.id }
+        guard let selectedDate else { return false }
+        let dateId = Bookmark.dateId(for: selectedDate)
+        return bookmarks.contains { $0.dateId == dateId }
     }
 
     var body: some View {
@@ -88,11 +90,12 @@ struct CalendarView: View {
     }
 
     private func toggleBookmark() {
-        if let existingBookmark = bookmarks.first(where: { $0.dailyVerseId == selectedDailyVerse.id }) {
+        guard let selectedDate else { return }
+        let dateId = Bookmark.dateId(for: selectedDate)
+        if let existingBookmark = bookmarks.first(where: { $0.dateId == dateId }) {
             modelContext.delete(existingBookmark)
         } else {
-            let bookmark = Bookmark(dailyVerseId: selectedDailyVerse.id)
-            modelContext.insert(bookmark)
+            modelContext.insert(Bookmark(dateId: dateId))
         }
     }
 

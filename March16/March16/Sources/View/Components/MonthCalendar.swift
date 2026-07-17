@@ -15,8 +15,8 @@ struct MonthCalendar: View {
     @Binding private var selectedDate: Date?
     private var displayDays: [[Date?]]
 
-    private var bookmarkedDailyVerseIds: Set<Int> {
-        Set(bookmarks.map { $0.dailyVerseId })
+    private var bookmarkedDateIds: Set<Int> {
+        Set(bookmarks.map { $0.dateId })
     }
 
     init(currentMonth: Date, selectedDate: Binding<Date?>) {
@@ -34,7 +34,7 @@ struct MonthCalendar: View {
                         DayCell(
                             date: date,
                             selectedDate: $selectedDate,
-                            bookmarkedDailyVerseIds: bookmarkedDailyVerseIds
+                            bookmarkedDateIds: bookmarkedDateIds
                         )
                     }
                 }
@@ -81,13 +81,10 @@ struct DayCell: View {
         guard let date, let selectedDate else { return false }
         return date.isSameDay(as: selectedDate)
     }
-    var bookmarkedDailyVerseIds: Set<Int> = []
+    var bookmarkedDateIds: Set<Int> = []
     var isBookmarked: Bool {
         guard let date else { return false }
-        // VerseStore loads the verse from CloudKit on a cache miss and refreshes
-        // this cell when the fetch completes.
-        guard let dailyVerse = VerseStore.shared.cachedVerse(for: date) else { return false }
-        return bookmarkedDailyVerseIds.contains(dailyVerse.id)
+        return bookmarkedDateIds.contains(Bookmark.dateId(for: date))
     }
     var isFuture: Bool {
         guard let date else { return false }
